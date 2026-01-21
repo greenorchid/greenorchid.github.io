@@ -51,7 +51,7 @@ jobs:
         run: npm test
 
       - name: Get commit hash
-        run: echo "VITE_COMMIT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        run: echo "VITE_APP_VERSION=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
       - name: Build with SvelteKit
         run: npm run build

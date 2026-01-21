@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import tippy from 'tippy.js';
 
-	let { content, trigger = 'click', placement = 'top' } = $props();
+	let { content, trigger = 'mouseenter focus click', placement = 'top', testId = 'tooltip-content'} = $props();
 	let element: HTMLElement;
 	let tippyInstance: { setContent: (content: string) => void } | null = null;
 
@@ -15,7 +15,12 @@
 				placement,
 				theme: 'custom-tooltip',
 				arrow: true,
-				interactive: true
+				interactive: true,
+				role: 'tooltip',
+				testId,
+				onShow(instance) {
+					instance.popper.setAttribute('data-testid', testId);
+				}
 			});
 		}
 	});

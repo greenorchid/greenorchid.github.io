@@ -50,8 +50,9 @@
 <div class={mobile ? 'relative' : 'fixed top-4 right-4'}>
 	<Tooltip
 		content={theme === 'light' ? 'Light theme enabled' : 'Dark theme enabled (right choice!)'}
-		trigger="mouseenter focus touchstart"
+		trigger="mouseenter focus"
 		placement="top"
+		testId="tooltip-theme"
 	>
 		<button
 			onclick={toggleTheme}

@@ -81,8 +81,9 @@
 >
 	<Tooltip
 		content={`Font Size (Current ${currentScale}%)`}
-		trigger="mouseenter focus touchstart"
+		trigger="mouseenter focus manual touchstart"
 		placement="top"
+		testId="tooltip-fontsize"
 	>
 		<button
 			onclick={() => (showPopover = !showPopover)}
@@ -113,6 +114,7 @@
 			role="dialog"
 			aria-modal="true"
 			aria-labelledby="font-size-heading"
+			data-testid="font-size-popover"
 		>
 			<!-- Header -->
 			<div class="mb-4">

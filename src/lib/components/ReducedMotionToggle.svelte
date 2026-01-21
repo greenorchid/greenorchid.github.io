@@ -52,8 +52,9 @@
 <div class={mobile ? 'relative' : 'fixed top-4 right-18'}>
 	<Tooltip
 		content={reducedMotion === 'true' ? 'Animations are disabled' : 'Animations are enabled'}
-		trigger="mouseenter focus touchstart"
+		trigger="mouseenter focus"
 		placement="top"
+		testId="tooltip-reduced-motion"
 	>
 		<button
 			onclick={toggleReducedMotion}

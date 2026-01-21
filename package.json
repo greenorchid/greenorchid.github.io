@@ -17,7 +17,7 @@
 		"lint": "prettier --check . && eslint ."
 	},
 	"devDependencies": {
-		"@eslint/compat": "^1.4.0",
+		"@eslint/compat": "^2.0.1",
 		"@eslint/js": "^9.39.1",
 		"@playwright/test": "^1.57.0",
 		"@sveltejs/adapter-auto": "^7.0.0",

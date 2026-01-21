@@ -16,7 +16,16 @@ const config = {
 			strict: true
 		}),
 		prerender: {
-			entries: ['*']
+			entries: ['*'],
+			handleUnseenRoutes: (route, seen) => {
+				if (
+					typeof route === 'string' &&
+					(route.startsWith('/blog/') || route.startsWith('/recipes/'))
+				) {
+					return 'prerender';
+				}
+				return 'ignore';
+			}
 		}
 	}
 };

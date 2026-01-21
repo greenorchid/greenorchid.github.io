@@ -2,6 +2,7 @@
 	/* eslint-disable svelte/no-navigation-without-resolve */
 	import { getAllPosts, getAllTags } from '$lib/blog/utils';
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 
 	const posts = getAllPosts();
 	const allTags = getAllTags();
@@ -62,7 +63,7 @@
 				<div
 					role="button"
 					tabindex="0"
-					onclick={() => goto(`/blog/${post.slug}`)}
+					onclick={() => goto(`${base}/blog/${post.slug}`)}
 					onkeydown={(e) => {
 						if (e.key === 'Enter' || e.key === ' ') {
 							e.preventDefault();

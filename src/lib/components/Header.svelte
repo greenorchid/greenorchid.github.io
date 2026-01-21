@@ -9,6 +9,7 @@
 
 	import { page } from '$app/stores';
 	import { isActive } from '$lib/utils';
+	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 
 	let currentPage = $derived($page.url.pathname);
@@ -89,7 +90,7 @@
 			{#each navLinks as link (link.href)}
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
 				<button
-					onclick={() => goto(link.href)}
+					onclick={() => goto(`${base}${link.href}`)}
 					class={getLinkClass(link.href)}
 					aria-current={isActive(link.href, currentPage) ? 'page' : undefined}
 				>
@@ -147,7 +148,7 @@
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
 				<button
 					onclick={() => {
-						goto(link.href);
+						goto(`${base}${link.href}`);
 						closeDropdowns();
 					}}
 					class="text-gray-900 hover:text-green-600 dark:text-gray-100 dark:hover:text-green-400 {getLinkClass(

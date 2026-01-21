@@ -2,6 +2,7 @@
 	/* eslint-disable svelte/no-navigation-without-resolve */
 	import LogoAnimated from '$lib/components/LogoAnimated.svelte';
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 </script>
 
 <div id="main-content" class="container mx-auto max-w-4xl px-4 py-8">
@@ -29,8 +30,9 @@
 	</p>
 	<p class="mt-6 text-sm text-gray-600 dark:text-gray-400">
 		For more about me and my adventures in code, head over to the
-		<button onclick={() => goto('/about')} class="text-blue-600 hover:underline dark:text-blue-400"
-			>About</button
+		<button
+			onclick={() => goto(`${base}/about`)}
+			class="text-blue-600 hover:underline dark:text-blue-400">About</button
 		> page.
 	</p>
 </div>

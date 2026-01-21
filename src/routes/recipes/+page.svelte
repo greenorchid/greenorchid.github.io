@@ -2,6 +2,7 @@
 	/* eslint-disable svelte/no-navigation-without-resolve */
 	import { getAllRecipes, getAllTags } from '$lib/recipes/utils';
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 
 	const recipes = getAllRecipes();
 	const allTags = getAllTags();
@@ -62,7 +63,7 @@
 				<div
 					role="button"
 					tabindex="0"
-					onclick={() => goto(`/recipes/${recipe.slug}`)}
+					onclick={() => goto(`${base}/recipes/${recipe.slug}`)}
 					onkeydown={(e) => {
 						if (e.key === 'Enter' || e.key === ' ') {
 							e.preventDefault();

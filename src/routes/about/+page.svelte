@@ -189,7 +189,7 @@
 							class="text-green-600 hover:underline dark:text-green-400">LinkedIn</a
 						>
 					</li>
-					<li>Email: techsmarc [at] gmail [dot] com</li>
+					<li>Email: marc [at] behan [dot] dev</li>
 				</ul>
 			</div>
 		</div>

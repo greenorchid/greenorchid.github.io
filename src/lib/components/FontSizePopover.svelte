@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import Tooltip from '$lib/components/Tooltip.svelte';
 
 	let { mobile = false } = $props();
 
@@ -57,41 +58,53 @@
 	}
 
 	// Close popover when clicking outside
-	function handleClickOutside() {
-		showPopover = false;
+	function handleClickOutside(event: MouseEvent) {
+		const target = event.target as HTMLElement;
+		// Close if click is outside the popover and button
+		if (!target.closest('.popover-container')) {
+			showPopover = false;
+		}
 	}
+
+	// Add global click listener
+	onMount(() => {
+		document.addEventListener('click', handleClickOutside);
+		return () => {
+			document.removeEventListener('click', handleClickOutside);
+		};
+	});
 </script>
 
 <!--<div class="group fixed relative top-4 right-54 z-[9998]">-->
-<div class="{mobile ? 'relative' : 'fixed top-4 right-32'} flex items-center gap-2">
-	<!-- Main button -->
-	<button
-		onclick={() => (showPopover = !showPopover)}
-		class="relative flex h-10 w-10 items-center justify-center rounded-lg bg-gray-200 p-2 text-gray-800 transition-colors duration-200 hover:bg-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:focus:ring-blue-400"
-		aria-label="Font size: {currentScale}%"
-		aria-expanded={showPopover}
-		aria-haspopup="true"
-		type="button"
+<div
+	class="{mobile ? 'relative' : 'fixed top-4 right-32'} popover-container flex items-center gap-2"
+>
+	<Tooltip
+		content={`Font Size (Current ${currentScale}%)`}
+		trigger="mouseenter focus touchstart"
+		placement="top"
 	>
-		<svg
-			class="h-6 w-6"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			stroke-width="1"
-			stroke-linecap="round"
-			stroke-linejoin="round"
+		<button
+			onclick={() => (showPopover = !showPopover)}
+			class="relative flex h-10 w-10 items-center justify-center rounded-lg bg-gray-200 p-2 text-gray-800 transition-colors duration-200 hover:bg-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:focus:ring-blue-400"
+			aria-label="Font size: {currentScale}%"
+			aria-expanded={showPopover}
+			aria-haspopup="true"
+			type="button"
 		>
-			<text x="4" y="18" font-size="16">Aa</text>
-		</svg>
-	</button>
-
-	<!-- Current scale indicator -->
-	<div
-		class="pointer-events-none absolute -bottom-10 left-1/2 z-20 -translate-x-1/2 rounded border border-gray-200 bg-white px-2 py-1 text-xs font-medium text-gray-700 opacity-0 shadow-md transition-all duration-300 group-hover:opacity-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
-	>
-		Font: {currentScale}%
-	</div>
+			<svg
+				class="h-6 w-6"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<text x="4" y="18" font-size="16">Aa</text>
+			</svg>
+		</button>
+	</Tooltip>
 
 	<!-- Popover content -->
 	{#if showPopover}
@@ -164,16 +177,6 @@
 			>
 				Reset to Default (100%)
 			</button>
-		</div>
-
-		<!-- Tooltip -->
-		<div
-			role="tooltip"
-			class="text-s absolute right-0 mt-2 rounded bg-gray-900 p-2 whitespace-nowrap text-white opacity-0 transition-opacity duration-200 group-focus-within:opacity-100 group-hover:opacity-100 dark:bg-gray-100 dark:text-gray-900"
-		>
-			Font Size (Current {currentScale}%)
-			<!-- Backdrop -->
-			<div class="fixed inset-0 z-[9998]" onclick={handleClickOutside} aria-hidden="true"></div>
 		</div>
 	{/if}
 </div>

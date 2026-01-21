@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import Tooltip from '$lib/components/Tooltip.svelte';
 
 	let { mobile = false } = $props();
 
@@ -49,7 +50,11 @@
 </script>
 
 <div class={mobile ? 'relative' : 'fixed top-4 right-18'}>
-	<div class="group relative">
+	<Tooltip
+		content={reducedMotion === 'true' ? 'Animations are disabled' : 'Animations are enabled'}
+		trigger="mouseenter focus touchstart"
+		placement="top"
+	>
 		<button
 			onclick={toggleReducedMotion}
 			class="relative rounded-lg bg-gray-200 p-2 text-gray-800 transition-colors duration-200 hover:bg-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:focus:ring-blue-400"
@@ -86,13 +91,5 @@
 				</svg>
 			{/if}
 		</button>
-
-		<!-- Tooltip -->
-		<div
-			role="tooltip"
-			class="text-s absolute right-0 mt-2 rounded bg-gray-900 p-2 whitespace-nowrap text-white opacity-0 transition-opacity duration-200 group-focus-within:opacity-100 group-hover:opacity-100 dark:bg-gray-100 dark:text-gray-900"
-		>
-			{reducedMotion == 'true' ? 'Animations are disabled' : 'Animations are enabled'}
-		</div>
-	</div>
+	</Tooltip>
 </div>

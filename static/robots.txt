@@ -5,4 +5,4 @@ Allow: /
 # Disallow: /admin/
 
 # Sitemap
-Sitemap: https://greenorchid.github.io/behan.dev-svelte/sitemap.xml
+Sitemap: https://greenorchid.github.io/sitemap.xml

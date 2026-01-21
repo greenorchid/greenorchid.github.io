@@ -1,6 +1,6 @@
 /* TEAM */
 Developer: Marc Behan
-Site: https://greenorchid.github.io/behan.dev-svelte
+Site: https://greenorchid.github.io/
 Location: Ireland
 
 /* THANKS */

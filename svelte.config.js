@@ -43,9 +43,6 @@ const config = {
 	},
 
 	vite: {
-		define: {
-			__COMMIT_HASH__: JSON.stringify(process.env.VITE_COMMIT || 'unknown')
-		},
 		build: {
 			chunkSizeWarningLimit: 2048,
 			rollupOptions: {

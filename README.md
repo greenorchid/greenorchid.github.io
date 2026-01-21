@@ -4,7 +4,7 @@ A personal website and blog built with [SvelteKit](https://svelte.dev/docs/kit) 
 
 ## Live Site
 
-Visit the live site at: [https://greenorchid.github.io/behan.dev-svelte/](https://greenorchid.github.io/behan.dev-svelte/)
+Visit the live site at: [https://greenorchid.github.io/](https://greenorchid.github.io/)
 
 ## Features
 
@@ -37,8 +37,8 @@ Visit the live site at: [https://greenorchid.github.io/behan.dev-svelte/](https:
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/greenorchid/behan.dev-svelte.git
-   cd behan.dev-svelte
+   git clone https://github.com/greenorchid/greenorchid.github.io.git
+   cd greenorchid.github.io
    ```
 
 2. Install dependencies:

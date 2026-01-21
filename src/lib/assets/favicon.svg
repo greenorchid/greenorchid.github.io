@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Background -->
+  <rect width="64" height="64" rx="12" fill="#0f172a"/>
+
+  <!-- Bold B -->
+  <path
+    d="M18 12h17c8 0 13 4 13 10 0 4-2 7-6 9 6 1 9 5 9 11 0 8-6 13-14 13H18V12zm16 18c4 0 7-2 7-6s-3-6-7-6h-6v12h6zm2 24c5 0 8-3 8-7s-3-7-8-7h-8v14h8z"
+    fill="#22c55e"
+  />
+
+  <!-- Circuit tracks (right side) -->
+  <path
+    d="M42 14v8h6
+       M42 30v6h10
+       M48 36v10"
+    stroke="#06402B"
+    stroke-width="3"
+    fill="none"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Circuit nodes (right side) -->
+  <circle cx="42" cy="14" r="2.5" fill="#06402B"/>
+  <circle cx="48" cy="22" r="2.5" fill="#06402B"/>
+  <circle cx="42" cy="30" r="2.5" fill="#06402B"/>
+  <circle cx="52" cy="36" r="2.5" fill="#06402B"/>
+  <circle cx="48" cy="46" r="2.5" fill="#06402B"/>
+  
+  <circle cx="42" cy="14" r="1" fill="#ffffff"/>
+  <circle cx="48" cy="22" r="1" fill="#ffffff"/>
+  <circle cx="42" cy="30" r="1" fill="#ffffff"/>
+  <circle cx="52" cy="36" r="1" fill="#ffffff"/>
+  <circle cx="48" cy="46" r="1" fill="#ffffff"/>
+
+  <!-- Circuit track (bottom-left of B) -->
+  <path
+    d="M22 42h8v8
+       M30 46h5
+       M25 50h5"
+    stroke="#06402B"
+    stroke-width="3"
+    fill="none"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+
+  <!-- Circuit nodes (bottom-left) -->
+  <circle cx="22" cy="42" r="2.5" fill="#06402B"/>
+  <circle cx="36" cy="46" r="2.5" fill="#06402B"/>
+  <circle cx="25" cy="50" r="2.5" fill="#06402B"/>
+  
+  <circle cx="22" cy="42" r="1" fill="#ffffff"/>
+  <circle cx="36" cy="46" r="1" fill="#ffffff"/>
+  <circle cx="25" cy="50" r="1" fill="#ffffff"/>
+</svg>
+

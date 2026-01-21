@@ -1,0 +1,34 @@
+---
+title: 'Your Blog Post Title'
+date: '2026-01-18'
+excerpt: 'A brief description of your blog post for previews.'
+tags: ['tag1', 'tag2', 'tag3']
+aiContributions: 'none'
+---
+
+# Your Blog Post Title
+
+This is the introduction paragraph. Hook the reader with something interesting about the topic.
+
+## Section 1: Main Topic
+
+Explain the main points here. Use headings, lists, and code blocks as needed.
+
+```javascript
+// Example code block
+console.log('Hello, world!');
+```
+
+## Section 2: Another Topic
+
+Continue with more details. Include images if applicable:
+
+![Alt text for image](/path/to/image.jpg)
+
+## Conclusion
+
+Wrap up your thoughts. Call to action or final remarks.
+
+---
+
+_Published on [Date]_ | _Tags: [tag1, tag2]_

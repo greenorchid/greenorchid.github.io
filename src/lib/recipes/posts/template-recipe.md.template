@@ -1,0 +1,42 @@
+---
+title: 'Recipe Name'
+date: '2026-01-18'
+excerpt: 'A delicious recipe description.'
+tags: ['recipe', 'cuisine', 'main-course']
+ingredients:
+  - Ingredient 1: 2 cups
+  - Ingredient 2: 1 tbsp # optional
+---
+
+# Recipe Name
+
+![Recipe Image](/path/to/recipe-image.jpg)
+
+A brief introduction to the recipe, its origins, or why it's special.
+
+## Ingredients
+
+- **Ingredient 1**: 2 cups
+- **Ingredient 2**: 1 tbsp (optional)
+
+## Instructions
+
+1. Step 1: Do something with ingredient 1.
+2. Step 2: Combine with ingredient 2.
+3. Step 3: Cook for 30 minutes.
+
+## Nutrition Facts (per serving)
+
+- Calories: 300
+- Protein: 15g
+- Carbs: 40g
+- Fat: 10g
+
+## Tips
+
+- Tip 1: Store leftovers in the fridge.
+- Tip 2: Adjust seasoning to taste.
+
+---
+
+_Serves: 4 | Prep: 15 min | Cook: 30 min | Total: 45 min_

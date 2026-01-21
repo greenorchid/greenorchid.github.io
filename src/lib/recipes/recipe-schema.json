@@ -1,0 +1,46 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"properties": {
+		"title": {
+			"type": "string",
+			"description": "The title of the recipe"
+		},
+		"date": {
+			"type": "string",
+			"description": "The publication date"
+		},
+		"excerpt": {
+			"type": "string",
+			"description": "A brief description"
+		},
+		"tags": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			},
+			"description": "Array of tags"
+		},
+		"ingredients": {
+			"oneOf": [
+				{
+					"type": "object",
+					"patternProperties": { ".*": { "type": "string" } },
+					"additionalProperties": false
+				},
+				{
+					"type": "array",
+					"items": {
+						"oneOf": [
+							{ "type": "string" },
+							{ "type": "object", "additionalProperties": { "type": ["string", "number"] } }
+						]
+					}
+				}
+			],
+			"description": "Ingredients as object or array"
+		}
+	},
+	"required": ["title", "date", "excerpt", "tags", "ingredients"],
+	"additionalProperties": true
+}

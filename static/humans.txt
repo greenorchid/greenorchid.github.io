@@ -1,0 +1,13 @@
+/* TEAM */
+Developer: Marc Behan
+Site: https://greenorchid.github.io/behan.dev-svelte
+Location: Ireland
+
+/* THANKS */
+Thanks to the Svelte, Tailwind, and open-source communities for the amazing tools.
+
+/* SITE */
+Last update: 2026
+Language: English
+Doctype: HTML5
+IDE: VS Code

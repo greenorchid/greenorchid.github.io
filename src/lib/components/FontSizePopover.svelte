@@ -79,12 +79,35 @@
 <div
 	class="{mobile ? 'relative' : 'fixed top-4 right-32'} popover-container flex items-center gap-2"
 >
-	<Tooltip
-		content={`Font Size (Current ${currentScale}%)`}
-		trigger="mouseenter focus manual touchstart"
-		placement="top"
-		testId="tooltip-fontsize"
-	>
+	{#if !mobile}
+		<Tooltip
+			content={`Font Size (Current ${currentScale}%)`}
+			trigger="mouseenter focus manual touchstart"
+			placement="top"
+			testId="tooltip-fontsize"
+		>
+			<button
+				onclick={() => (showPopover = !showPopover)}
+				class="btn-header flex h-10 w-10 items-center justify-center"
+				aria-label="Font size: {currentScale}%"
+				aria-expanded={showPopover}
+				aria-haspopup="true"
+				type="button"
+			>
+				<svg
+					class="h-6 w-6"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<text x="4" y="18" font-size="16">Aa</text>
+				</svg>
+			</button>
+		</Tooltip>
+	{:else}
 		<button
 			onclick={() => (showPopover = !showPopover)}
 			class="btn-header flex h-10 w-10 items-center justify-center"
@@ -105,7 +128,7 @@
 				<text x="4" y="18" font-size="16">Aa</text>
 			</svg>
 		</button>
-	</Tooltip>
+	{/if}
 
 	<!-- Popover content -->
 	{#if showPopover}

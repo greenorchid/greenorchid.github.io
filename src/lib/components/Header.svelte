@@ -6,7 +6,6 @@
 	import ReducedMotionToggle from '$lib/components/ReducedMotionToggle.svelte';
 	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
 	import HamburgerMenu from '$lib/components/HamburgerMenu.svelte';
-	import Tooltip from '$lib/components/Tooltip.svelte';
 
 	import { page } from '$app/stores';
 	import { isActive } from '$lib/utils';
@@ -104,36 +103,29 @@
 	<!-- Mobile triggers -->
 	<div class="flex gap-2 md:hidden">
 		<HamburgerMenu isOpen={showNavDropdown} onToggle={(val: boolean) => (showNavDropdown = val)} />
-		<Tooltip
-			content="Open accessibility"
-			trigger="mouseenter focus"
-			placement="bottom"
-			testId="tooltip-accessibility"
+		<button
+			onclick={() => (showAccessibilityDropdown = !showAccessibilityDropdown)}
+			class="relative z-50 rounded-lg bg-gray-100 p-2 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
+			aria-label="Toggle accessibility options"
+			aria-expanded={showAccessibilityDropdown}
+			aria-controls="accessibility-menu"
+			type="button"
 		>
-			<button
-				onclick={() => (showAccessibilityDropdown = !showAccessibilityDropdown)}
-				class="relative z-50 rounded-lg bg-gray-100 p-2 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
-				aria-label="Toggle accessibility options"
-				aria-expanded={showAccessibilityDropdown}
-				aria-controls="accessibility-menu"
-				type="button"
-			>
-				<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-					/>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-					/>
-				</svg>
-			</button>
-		</Tooltip>
+			<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+				/>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+				/>
+			</svg>
+		</button>
 	</div>
 
 	<!-- Desktop accessibility -->
@@ -178,8 +170,12 @@
 			: 'hidden'}"
 		role="menu"
 	>
-		<FontSizePopover mobile={true} />
-		<ReducedMotionToggle mobile={true} />
+		<div class="mb-2">
+			<FontSizePopover mobile={true} />
+		</div>
+		<div class="mb-2">
+			<ReducedMotionToggle mobile={true} />
+		</div>
 		<ThemeToggle mobile={true} />
 	</div>
 </header>

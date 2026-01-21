@@ -37,7 +37,7 @@
 		"globals": "^16.5.0",
 		"gray-matter": "^4.0.3",
 		"jsdom": "^27.4.0",
-		"prettier": "^3.7.4",
+		"prettier": "^3.8.0",
 		"prettier-plugin-svelte": "^3.4.0",
 		"prettier-plugin-tailwindcss": "^0.7.2",
 		"svelte": "^5.45.6",

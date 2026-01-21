@@ -69,7 +69,7 @@
 							window.open(link.url, '_blank');
 						}
 					}}
-					class="group cursor-pointer rounded-lg border border-gray-200 bg-gray-100 p-6 transition-colors duration-200 hover:border-green-500 hover:shadow-lg focus:ring-2 focus:ring-blue-500 focus:outline dark:border-gray-700 dark:bg-gray-800 dark:hover:border-green-500"
+					class="card-interactive group cursor-pointer"
 				>
 					<div class="flex items-start justify-between gap-4">
 						<div class="flex-1">
@@ -93,9 +93,9 @@
 									/>
 								</svg>
 							</h2>
-							<p class="mb-3 text-gray-700 dark:text-gray-300">{link.description}</p>
+							<p class="mb-3 break-words text-gray-700 dark:text-gray-300">{link.description}</p>
 							<div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-								<span class="truncate text-green-600 dark:text-green-400">
+								<span class="break-words text-green-600 dark:text-green-400">
 									{link.url}
 								</span>
 								{#if link.addedDate}

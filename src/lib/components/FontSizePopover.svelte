@@ -87,7 +87,7 @@
 	>
 		<button
 			onclick={() => (showPopover = !showPopover)}
-			class="relative flex h-10 w-10 items-center justify-center rounded-lg bg-gray-200 p-2 text-gray-800 transition-colors duration-200 hover:bg-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:focus:ring-blue-400"
+			class="btn-header flex h-10 w-10 items-center justify-center"
 			aria-label="Font size: {currentScale}%"
 			aria-expanded={showPopover}
 			aria-haspopup="true"

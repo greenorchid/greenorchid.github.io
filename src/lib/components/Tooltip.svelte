@@ -6,7 +6,8 @@
 		content,
 		trigger = 'mouseenter focus click',
 		placement = 'top',
-		testId = 'tooltip-content'
+		testId = 'tooltip-content',
+		children
 	} = $props();
 	let element: HTMLElement;
 	let tippyInstance: { setContent: (content: string) => void } | null = null;
@@ -38,7 +39,7 @@
 </script>
 
 <div bind:this={element}>
-	<slot />
+	{@render children()}
 </div>
 
 <style>

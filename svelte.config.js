@@ -40,6 +40,20 @@ const config = {
 				throw new Error(`${status} ${path}`);
 			}
 		}
+	},
+
+	vite: {
+		build: {
+			chunkSizeWarningLimit: 2048,
+			rollupOptions: {
+				output: {
+					manualChunks: {
+						tippy: ['tippy.js'],
+						svelte: ['svelte', 'svelte/internal']
+					}
+				}
+			}
+		}
 	}
 };
 

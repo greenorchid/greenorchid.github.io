@@ -3,6 +3,7 @@
 	import 'highlight.js/styles/github-dark.css';
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
+	import Tooltip from '$lib/components/Tooltip.svelte';
 
 	let { data } = $props();
 	const post = $derived(data.post);
@@ -73,14 +74,20 @@
 					</div>
 				{/if}
 				<div class="mt-4">
-					<span
-						class="inline-flex items-center rounded-lg border-2 bg-white px-4 py-2 text-sm font-medium dark:bg-gray-800 {getAiBadgeBorder(
-							post.aiContributions
-						)}"
-						title={getAiTooltip(post.aiContributions)}
+					<Tooltip
+						content={getAiTooltip(post.aiContributions)}
+						trigger="mouseenter focus"
+						placement="top"
+						testId="tooltip-ai"
 					>
-						🤖 AI: {post.aiContributions}
-					</span>
+						<span
+							class="inline-flex items-center rounded-lg border-2 bg-white px-4 py-2 text-sm font-medium dark:bg-gray-800 {getAiBadgeBorder(
+								post.aiContributions
+							)}"
+						>
+							🤖 AI: {post.aiContributions}
+						</span>
+					</Tooltip>
 				</div>
 			</header>
 

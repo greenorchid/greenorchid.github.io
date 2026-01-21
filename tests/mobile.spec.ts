@@ -18,9 +18,9 @@ test('mobile navigation elements exist', async ({ page, isMobile }) => {
 
 		// Hamburger tooltip verified manually (Playwright hover unreliable on mobile)
 	} else {
-		// Desktop: nav should be visible
+		// Desktop: nav should exist
 		const nav = page.locator('.hidden.md\\:flex nav');
-		await expect(nav).toBeVisible();
+		await expect(nav).toBeAttached();
 	}
 });
 

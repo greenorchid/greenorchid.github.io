@@ -70,7 +70,7 @@
 							goto(`/recipes/${recipe.slug}`);
 						}
 					}}
-					class="group cursor-pointer rounded-lg border border-gray-200 bg-gray-100 p-6 transition-colors duration-200 hover:border-green-500 hover:shadow-lg focus:ring-2 focus:ring-blue-500 focus:outline dark:border-gray-700 dark:bg-gray-800 dark:hover:border-green-500"
+					class="card-interactive group cursor-pointer"
 				>
 					<h2
 						class="mb-2 text-2xl font-bold text-gray-900 transition-colors group-hover:text-green-600 dark:text-gray-100 dark:group-hover:text-green-400"

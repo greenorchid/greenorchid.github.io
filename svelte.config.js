@@ -15,9 +15,9 @@ const config = {
 			precompress: false,
 			strict: true
 		}),
-		paths: {
-			base: '/behan.dev-svelte'
-		},
+		// paths: {
+		// 	base: '/behan.dev-svelte'
+		// },
 		prerender: {
 			entries: ['*'],
 			handleUnseenRoutes: (route) => {

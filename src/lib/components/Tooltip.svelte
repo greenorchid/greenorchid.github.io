@@ -2,7 +2,12 @@
 	import { onMount } from 'svelte';
 	import tippy from 'tippy.js';
 
-	let { content, trigger = 'mouseenter focus click', placement = 'top', testId = 'tooltip-content'} = $props();
+	let {
+		content,
+		trigger = 'mouseenter focus click',
+		placement = 'top',
+		testId = 'tooltip-content'
+	} = $props();
 	let element: HTMLElement;
 	let tippyInstance: { setContent: (content: string) => void } | null = null;
 

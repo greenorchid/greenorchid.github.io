@@ -17,7 +17,8 @@ const config = {
 		}),
 		prerender: {
 			entries: ['*'],
-			handleUnseenRoutes: (route, seen) => {
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			handleUnseenRoutes: (route, _seen) => {
 				if (
 					typeof route === 'string' &&
 					(route.startsWith('/blog/') || route.startsWith('/recipes/'))

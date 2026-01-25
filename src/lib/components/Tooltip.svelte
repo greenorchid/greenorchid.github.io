@@ -23,7 +23,6 @@
 				arrow: true,
 				interactive: true,
 				role: 'tooltip',
-				testId,
 				onShow(instance) {
 					instance.popper.setAttribute('data-testid', testId);
 				}

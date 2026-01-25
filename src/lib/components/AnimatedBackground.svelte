@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { SvelteMap } from 'svelte/reactivity';
+	import { logger } from '$lib/logger';
 
 	let canvas: HTMLCanvasElement | undefined = $state();
 	let ctx: CanvasRenderingContext2D | null = null;
@@ -25,13 +26,13 @@
 
 	onMount(() => {
 		if (!canvas) {
-			console.error('Canvas element not found');
+			logger.error('Canvas element not found');
 			return;
 		}
 
 		ctx = canvas.getContext('2d', { alpha: true });
 		if (!ctx) {
-			console.error('Could not get 2D context');
+			logger.error('Could not get 2D context');
 			return;
 		}
 

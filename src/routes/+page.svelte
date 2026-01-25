@@ -3,6 +3,8 @@
 	import LogoAnimated from '$lib/components/LogoAnimated.svelte';
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
+	import BlueskyAuth from '$lib/components/bluesky/BlueskyAuth.svelte';
+	import BlueskyTimeline from '$lib/components/bluesky/BlueskyTimeline.svelte';
 </script>
 
 <div id="main-content" class="container mx-auto max-w-4xl px-4 py-8">
@@ -35,4 +37,15 @@
 			class="text-blue-600 hover:underline dark:text-blue-400">About</button
 		> page.
 	</p>
+
+	<div class="mt-12 grid grid-cols-1 items-start gap-12 md:grid-cols-3">
+		<div class="space-y-4 md:col-span-1">
+			<h2 class="text-2xl font-bold text-gray-900 dark:text-white">Connect</h2>
+			<BlueskyAuth />
+		</div>
+		<div class="space-y-4 md:col-span-2">
+			<h2 class="text-2xl font-bold text-gray-900 dark:text-white">Recent Skeets</h2>
+			<BlueskyTimeline />
+		</div>
+	</div>
 </div>

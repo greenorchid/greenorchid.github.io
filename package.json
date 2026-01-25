@@ -49,6 +49,8 @@
 		"vitest": "^4.0.17"
 	},
 	"dependencies": {
+		"@bluesky-social/api": "^0.17.3",
+		"@bluesky-social/oauth-client-browser": "^0.3.33",
 		"highlight.js": "^11.11.1",
 		"marked": "^17.0.1",
 		"marked-highlight": "^2.2.3",

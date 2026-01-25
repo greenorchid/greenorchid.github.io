@@ -22,6 +22,7 @@ export interface BlogPost {
 	aiContributions: string;
 	content: string;
 	html: string;
+	blueskyUri?: string;
 }
 
 // Load all markdown files from the posts directory
@@ -82,6 +83,9 @@ function parseMarkdown(content: string, slug: string): BlogPost {
 	const aiContributionsMatch =
 		frontmatter.match(/^aiContributions:\s*["'](.+?)["']/m) ||
 		frontmatter.match(/^aiContributions:\s*(.+)$/m);
+	const blueskyUriMatch =
+		frontmatter.match(/^blueskyUri:\s*["'](.+?)["']/m) ||
+		frontmatter.match(/^blueskyUri:\s*(.+)$/m);
 
 	const title = titleMatch ? titleMatch[1].trim() : 'Untitled';
 	const date = dateMatch ? dateMatch[1].trim() : new Date().toISOString().split('T')[0];
@@ -123,7 +127,8 @@ function parseMarkdown(content: string, slug: string): BlogPost {
 		tags,
 		aiContributions,
 		content: markdownContent,
-		html
+		html,
+		blueskyUri: blueskyUriMatch ? blueskyUriMatch[1].trim() : undefined
 	};
 }
 

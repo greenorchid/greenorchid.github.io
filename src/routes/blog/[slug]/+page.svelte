@@ -1,12 +1,21 @@
 <script lang="ts">
 	/* eslint-disable svelte/no-navigation-without-resolve */
+	import { onMount } from 'svelte';
 	import 'highlight.js/styles/github-dark.css';
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import Tooltip from '$lib/components/Tooltip.svelte';
+	import BlueskyComments from '$lib/components/bluesky/BlueskyComments.svelte';
+	import { post as postToBluesky } from '$lib/components/bluesky/actions';
+	import { blueskyStore } from '$lib/components/bluesky/stores.svelte';
+	import { initializeAgent } from '$lib/components/bluesky/client';
 
 	let { data } = $props();
 	const post = $derived(data.post);
+
+	onMount(() => {
+		initializeAgent();
+	});
 
 	function getAiBadgeBorder(level: string) {
 		switch (level) {
@@ -78,7 +87,6 @@
 						content={getAiTooltip(post.aiContributions)}
 						trigger="mouseenter focus"
 						placement="top"
-						testId="tooltip-ai"
 					>
 						<span
 							class="inline-flex items-center rounded-lg border-2 bg-white px-4 py-2 text-sm font-medium dark:bg-gray-800 {getAiBadgeBorder(
@@ -89,6 +97,47 @@
 						</span>
 					</Tooltip>
 				</div>
+
+				<div class="mt-4 flex flex-wrap items-center gap-4">
+					{#if blueskyStore.isAuthenticated}
+						<button
+							onclick={async () => {
+								const text = `Read "${post.title}" by @${blueskyStore.session?.handle || 'behan.dev'}\n\n${window.location.href}`;
+								await postToBluesky(text);
+								alert('Shared to Bluesky!');
+							}}
+							disabled={blueskyStore.isLoading}
+							class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+						>
+							<svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+								<path
+									d="M12 10.8c0-4.004 3.014-7.25 6.732-7.25C22.454 3.55 24 6.545 24 9.496c0 3.32-2.148 6.27-5.414 7.245 4.316.326 7.414 2.213 7.414 4.54 0 2.242-2.88 4.148-7.3 4.607.014-.148.02-.3.02-.454 0-4.004-3.014-7.25-6.732-7.25-3.718 0-6.732 3.246-6.732 7.25 0 .154.006.306.02.454-4.42-.459-7.3-2.365-7.3-4.607 0-2.327 3.098-4.214 7.414-4.54C2.148 15.766 0 12.816 0 9.496c0-2.951 1.546-5.946 5.268-5.946 3.718 0 6.732 3.246 6.732 7.25z"
+								/>
+							</svg>
+							Share on Bluesky
+						</button>
+					{:else}
+						<a
+							href="/"
+							class="inline-flex items-center gap-2 rounded-lg bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+						>
+							Connect Bluesky to Share
+						</a>
+					{/if}
+
+					{#if post.blueskyUri}
+						<a
+							href="https://bsky.app/profile/{post.blueskyUri.split('/')[2]}/post/{post.blueskyUri
+								.split('/')
+								.pop()}"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="text-sm text-blue-600 hover:underline dark:text-blue-400"
+						>
+							View on Bluesky
+						</a>
+					{/if}
+				</div>
 			</header>
 
 			<div
@@ -97,6 +146,10 @@
 				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 				{@html post.html}
 			</div>
+
+			{#if post.blueskyUri}
+				<BlueskyComments postUri={post.blueskyUri} />
+			{/if}
 		</div>
 	</article>
 {/if}

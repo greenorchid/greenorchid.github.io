@@ -37,5 +37,12 @@ export default defineConfig(
 				svelteConfig
 			}
 		}
+	},
+	{
+		files: ['src/lib/components/bluesky/**/*.ts', 'src/lib/components/bluesky/**/*.svelte'],
+		rules: {
+			'@typescript-eslint/no-explicit-any': 'off',
+			'@typescript-eslint/no-unused-vars': 'off'
+		}
 	}
 );

@@ -1,12 +1,12 @@
 import { json } from '@sveltejs/kit';
-import { PUBLIC_DOMAIN } from '$env/static/public';
+import { CONFIG } from '$lib/config';
 
 export const GET = () => {
-	const domain = PUBLIC_DOMAIN.endsWith('/') ? PUBLIC_DOMAIN.slice(0, -1) : PUBLIC_DOMAIN;
+	const domain = CONFIG.domain;
 
 	return json({
 		client_id: `${domain}/client-metadata.json`,
-		client_name: 'Behan.dev Svelte',
+		client_name: CONFIG.clientName,
 		client_uri: domain,
 		redirect_uris: [`${domain}/`],
 		scope: 'atproto transition:generic',

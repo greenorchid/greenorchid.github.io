@@ -3,6 +3,8 @@
 	import LogoAnimated from '$lib/components/LogoAnimated.svelte';
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
+
+	import BlueskyFeed from '$lib/components/bluesky/BlueskyFeed.svelte';
 </script>
 
 <div id="main-content" class="container mx-auto max-w-4xl px-4 py-8">
@@ -25,7 +27,7 @@
 		It's a mix of technical insights and the occasional dad joke to keep things lively.
 	</p>
 	<p class="text-gray-700 dark:text-gray-300">
-		Why 'dad jokes'? Because nothing says 'I'm a developer' like a pun about cloud computing being
+		Why 'dad jokes'? Because nothing says 'I'm a developer' like a pun about cloud computing having
 		'sky-high' costs!
 	</p>
 	<p class="mt-6 text-sm text-gray-600 dark:text-gray-400">
@@ -35,4 +37,8 @@
 			class="text-blue-600 hover:underline dark:text-blue-400">About</button
 		> page.
 	</p>
+
+	<div class="mt-12 w-full">
+		<BlueskyFeed />
+	</div>
 </div>

@@ -1,12 +1,22 @@
 <script lang="ts">
 	/* eslint-disable svelte/no-navigation-without-resolve */
+	import { onMount } from 'svelte';
 	import 'highlight.js/styles/github-dark.css';
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
+	import { page } from '$app/state';
 	import Tooltip from '$lib/components/Tooltip.svelte';
+	import BlueskyComments from '$lib/components/bluesky/BlueskyComments.svelte';
+	import BlueskyButton from '$lib/components/bluesky/BlueskyButton.svelte';
+	import { initializeAgent } from '$lib/components/bluesky/client';
+	import { CONFIG } from '$lib/config';
 
 	let { data } = $props();
 	const post = $derived(data.post);
+
+	onMount(() => {
+		initializeAgent();
+	});
 
 	function getAiBadgeBorder(level: string) {
 		switch (level) {
@@ -73,12 +83,11 @@
 						{/each}
 					</div>
 				{/if}
-				<div class="mt-4">
+				<div class="mt-6 flex flex-wrap items-center justify-between gap-4">
 					<Tooltip
 						content={getAiTooltip(post.aiContributions)}
 						trigger="mouseenter focus"
 						placement="top"
-						testId="tooltip-ai"
 					>
 						<span
 							class="inline-flex items-center rounded-lg border-2 bg-white px-4 py-2 text-sm font-medium dark:bg-gray-800 {getAiBadgeBorder(
@@ -88,6 +97,23 @@
 							🤖 AI: {post.aiContributions}
 						</span>
 					</Tooltip>
+
+					<div class="flex flex-wrap items-center gap-4">
+						<BlueskyButton
+							href="https://bsky.app/intent/compose?text={encodeURIComponent(
+								`Read "${post.title}" by @${CONFIG.blueskyHandle}\n\n${page.url.href}`
+							)}"
+						/>
+
+						{#if post.blueskyUri}
+							<BlueskyButton
+								href="https://bsky.app/profile/{post.blueskyUri.split('/')[2]}/post/{post.blueskyUri
+									.split('/')
+									.pop()}"
+								text="View on Bluesky"
+							/>
+						{/if}
+					</div>
 				</div>
 			</header>
 
@@ -97,6 +123,10 @@
 				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 				{@html post.html}
 			</div>
+
+			{#if post.blueskyUri}
+				<BlueskyComments postUri={post.blueskyUri} />
+			{/if}
 		</div>
 	</article>
 {/if}

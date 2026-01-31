@@ -1,0 +1,61 @@
+name: Bluesky Auto-Post
+
+on:
+  push:
+    branches:
+      - 'main' # Run on main branch only
+    paths:
+      - 'src/lib/blog/posts/*.md'
+      - 'src/lib/recipes/posts/*.md'
+
+permissions:
+  contents: write # Required to commit changes back
+
+jobs:
+  bluesky-post:
+    runs-on: ubuntu-latest
+    # Only run after successful build (if build job exists in deploy.yml)
+    # Remove this condition if you want it to run independently
+    if: github.event_name == 'push'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # Need at least 2 commits to compare
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm install @atproto/api gray-matter glob
+
+      - name: Post to Bluesky
+        env:
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          SITE_URL: https://behan.dev
+        run: |
+          node .github/scripts/bluesky-post.js
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add src/lib/blog/posts/*.md src/lib/recipes/posts/*.md
+          git commit -m "chore: add Bluesky URIs to new posts [skip ci]" || exit 0
+          git push

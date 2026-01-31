@@ -22,8 +22,8 @@
 				theme: 'custom-tooltip',
 				arrow: true,
 				interactive: true,
+				appendTo: 'parent',
 				role: 'tooltip',
-				testId,
 				onShow(instance) {
 					instance.popper.setAttribute('data-testid', testId);
 				}

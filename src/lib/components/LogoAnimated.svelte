@@ -1,4 +1,5 @@
 <script>
+	import { CONFIG } from '$lib/config';
 	export let size = 48;
 </script>
 
@@ -9,7 +10,7 @@
 	width={size}
 	height={size}
 	role="img"
-	aria-label="Behan.dev animated logo"
+	aria-label="{CONFIG.siteName} animated logo"
 >
 	<!-- Filters -->
 	<defs>

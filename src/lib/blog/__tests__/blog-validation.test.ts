@@ -12,7 +12,8 @@ const blogSchema = {
 		date: { type: 'string' },
 		excerpt: { type: 'string' },
 		tags: { type: 'array', items: { type: 'string' } },
-		aiContributions: { type: 'string', enum: ['none', 'partial', 'considerable'] }
+		aiContributions: { type: 'string', enum: ['none', 'partial', 'considerable'] },
+		blueskyUri: { type: 'string', format: 'uri' }
 	},
 	required: ['title', 'date', 'excerpt', 'tags', 'aiContributions'],
 	additionalProperties: false

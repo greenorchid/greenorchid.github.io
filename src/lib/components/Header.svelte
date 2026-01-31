@@ -11,6 +11,7 @@
 	import { isActive } from '$lib/utils';
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
+	import { CONFIG } from '$lib/config';
 
 	let currentPage = $derived($page.url.pathname);
 
@@ -80,7 +81,7 @@
 	<div class="flex items-center gap-3">
 		<a href="{base}/" class="flex items-center gap-3">
 			<LogoAnimated size={40} />
-			<span class="text-lg font-semibold text-gray-900 dark:text-gray-100">behan.dev</span>
+			<span class="text-lg font-semibold text-gray-900 dark:text-gray-100">{CONFIG.siteName}</span>
 		</a>
 	</div>
 

@@ -22,6 +22,7 @@ export interface BlogPost {
 	aiContributions: string;
 	content: string;
 	html: string;
+	blueskyUri?: string;
 }
 
 // Load all markdown files from the posts directory
@@ -57,12 +58,26 @@ export function getPostBySlug(slug: string): BlogPost | null {
 }
 
 function parseMarkdown(content: string, slug: string): BlogPost {
-	// Parse frontmatter
-	const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
+	// Parse frontmatter - allow \r\n and optional spaces
+	const frontmatterRegex = /^---\s*\r?\n([\s\S]*?)\r?\n---\s*\r?\n?([\s\S]*)$/;
 	const match = content.match(frontmatterRegex);
 
 	if (!match) {
-		throw new Error(`Invalid markdown format for post: ${slug}`);
+		console.error(
+			`Invalid markdown format for post: ${slug}. Content might be missing frontmatter or have invalid separators.`
+		);
+		// Fallback for malformed posts so we don't crash the whole site
+		return {
+			slug,
+			title: `Error: Malformed Post (${slug})`,
+			date: new Date().toISOString().split('T')[0],
+			excerpt: 'Format error in markdown file.',
+			tags: [],
+			aiContributions: 'none',
+			content: content,
+			html: `<p>Error parsing post content for ${slug}. Please check the file format.</p>`,
+			blueskyUri: undefined
+		};
 	}
 
 	const frontmatter = match[1];
@@ -82,6 +97,9 @@ function parseMarkdown(content: string, slug: string): BlogPost {
 	const aiContributionsMatch =
 		frontmatter.match(/^aiContributions:\s*["'](.+?)["']/m) ||
 		frontmatter.match(/^aiContributions:\s*(.+)$/m);
+	const blueskyUriMatch =
+		frontmatter.match(/^blueskyUri:\s*["'](.+?)["']/m) ||
+		frontmatter.match(/^blueskyUri:\s*(.+)$/m);
 
 	const title = titleMatch ? titleMatch[1].trim() : 'Untitled';
 	const date = dateMatch ? dateMatch[1].trim() : new Date().toISOString().split('T')[0];
@@ -123,7 +141,8 @@ function parseMarkdown(content: string, slug: string): BlogPost {
 		tags,
 		aiContributions,
 		content: markdownContent,
-		html
+		html,
+		blueskyUri: blueskyUriMatch ? blueskyUriMatch[1].trim() : undefined
 	};
 }
 

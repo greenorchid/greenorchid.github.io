@@ -1,12 +1,23 @@
 <script lang="ts">
 	/* eslint-disable svelte/no-navigation-without-resolve */
+	import { onMount } from 'svelte';
 	import 'highlight.js/styles/github-dark.css';
 	import IngredientsList from '$lib/components/IngredientsList.svelte';
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 
+	import { page } from '$app/state';
+	import { CONFIG } from '$lib/config';
+	import BlueskyComments from '$lib/components/bluesky/BlueskyComments.svelte';
+	import BlueskyButton from '$lib/components/bluesky/BlueskyButton.svelte';
+	import { initializeAgent } from '$lib/components/bluesky/client';
+
 	let { data } = $props();
 	const recipe = $derived(data.post);
+
+	onMount(() => {
+		initializeAgent();
+	});
 </script>
 
 {#if recipe}
@@ -36,17 +47,35 @@
 					{recipe.title}
 				</h1>
 				<p class="mb-4 text-sm text-gray-500 dark:text-gray-400">{recipe.date}</p>
-				{#if recipe.tags.length > 0}
+				<div class="mt-6 flex flex-wrap items-center justify-between gap-2">
 					<div class="flex flex-wrap gap-2">
-						{#each recipe.tags as tag (tag)}
-							<span
-								class="rounded-full border border-green-200 bg-green-100 px-3 py-1 text-sm text-green-700 dark:border-green-800 dark:bg-green-900/30 dark:text-green-400"
-							>
-								{tag}
-							</span>
-						{/each}
+						{#if recipe.tags.length > 0}
+							{#each recipe.tags as tag (tag)}
+								<span
+									class="rounded-full border border-green-200 bg-green-100 px-3 py-1 text-sm text-green-700 dark:border-green-800 dark:bg-green-900/30 dark:text-green-400"
+								>
+									{tag}
+								</span>
+							{/each}
+						{/if}
 					</div>
-				{/if}
+					<div class="flex flex-wrap items-center gap-4">
+						<BlueskyButton
+							href="https://bsky.app/intent/compose?text={encodeURIComponent(
+								`Read "${recipe.title}" by @${CONFIG.blueskyHandle}\n\n${page.url.href}`
+							)}"
+						/>
+
+						{#if recipe.blueskyUri}
+							<BlueskyButton
+								href="https://bsky.app/profile/{recipe.blueskyUri.split(
+									'/'
+								)[2]}/post/{recipe.blueskyUri.split('/').pop()}"
+								text="View on Bluesky"
+							/>
+						{/if}
+					</div>
+				</div>
 			</header>
 
 			{#if recipe.ingredients && recipe.ingredients.length > 0}
@@ -59,6 +88,9 @@
 				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 				{@html recipe.html}
 			</div>
+			{#if recipe.blueskyUri}
+				<BlueskyComments postUri={recipe.blueskyUri} />
+			{/if}
 		</div>
 	</article>
 {/if}

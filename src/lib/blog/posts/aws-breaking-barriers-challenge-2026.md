@@ -2,7 +2,7 @@
 title: 'Innovating for Good: The AWS Breaking Barriers Challenge 2026'
 date: '2026-01-16'
 excerpt: 'Reflecting on a 3-day hackathon helping the Irish Refugee Council build an AI-powered chatbot with AWS Bedrock.'
-tags: ['AWS', 'AI', 'Hackathon', 'Social Impact', 'Chatbot', 'Bedrock', 'Breaking Barriers']
+tags: ['AWS', 'AI', 'Hackathon', 'Social Impact', 'Chatbot', 'Breaking Barriers']
 aiContributions: 'none'
 ---
 

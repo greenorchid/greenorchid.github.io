@@ -56,4 +56,4 @@ Based on Adam Witt's "Italian Beef Sandwich 2.0", this giardiniera is the great 
 - **Serving**: Use a clean utensil each time you serve to extend shelf life.
 - **Usage**: Essential for Italian Beef, but also amazing on pizzas, subs, eggs, or mixed into pasta salad.
 
-For the full breakdown and video, check out [Adam Witt's recipe](https://www.adamwitt.co/allrecipes/italianbeef2). I also threw in a few fresh chillis as I like it hot!
+For the full breakdown and video, check out [Adam Witt's recipe](https://www.adamwitt.co/allrecipes/italianbeef2). I also threw in a few fresh chillis with the veg as I like it hot!

@@ -99,9 +99,21 @@ export async function initializeAgent() {
 						}
 
 						let finalRequestInfo: string = actualUrl;
-						if (actualUrl.startsWith(serviceUrl)) {
-							finalRequestInfo = actualUrl.slice(serviceUrl.length);
-							if (!finalRequestInfo.startsWith('/')) finalRequestInfo = '/' + finalRequestInfo;
+						try {
+							const requestUrlObj = new URL(actualUrl);
+							const serviceUrlObj = new URL(serviceUrl);
+
+							if (requestUrlObj.origin === serviceUrlObj.origin) {
+								finalRequestInfo =
+									requestUrlObj.pathname + requestUrlObj.search + requestUrlObj.hash;
+							}
+						} catch {
+							// fallback to original behavior if URL parsing fails (unlikely for valid requests)
+							if (actualUrl.startsWith(serviceUrl)) {
+								finalRequestInfo = actualUrl.slice(serviceUrl.length);
+								if (!finalRequestInfo.startsWith('/'))
+									finalRequestInfo = '/' + finalRequestInfo;
+							}
 						}
 
 						return fetchFn.call(session, finalRequestInfo, forwardInit);

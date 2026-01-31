@@ -3,7 +3,7 @@ name: Bluesky Auto-Post
 on:
   push:
     branches:
-      - '**' # Run on all branches for testing; change to 'main' after testing
+      - 'main' # Run on main branch only
     paths:
       - 'src/lib/blog/posts/*.md'
       - 'src/lib/recipes/posts/*.md'

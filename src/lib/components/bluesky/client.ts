@@ -111,8 +111,7 @@ export async function initializeAgent() {
 							// fallback to original behavior if URL parsing fails (unlikely for valid requests)
 							if (actualUrl.startsWith(serviceUrl)) {
 								finalRequestInfo = actualUrl.slice(serviceUrl.length);
-								if (!finalRequestInfo.startsWith('/'))
-									finalRequestInfo = '/' + finalRequestInfo;
+								if (!finalRequestInfo.startsWith('/')) finalRequestInfo = '/' + finalRequestInfo;
 							}
 						}
 

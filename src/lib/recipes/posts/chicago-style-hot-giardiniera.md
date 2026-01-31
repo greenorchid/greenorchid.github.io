@@ -19,7 +19,6 @@ ingredients:
   - Chili flakes: 5 g # 1 Tbsp
   - Garlic cloves: 6 # 30g, peeled
   - Olive oil: 250 ml # enough to cover
-blueskyUri: 'at://did:plc:oo4sqwem2prw2yebqexllrx3/app.bsky.feed.post/3mdqkmwuf3g2a'
 ---
 
 # Chicago Style Hot Giardiniera

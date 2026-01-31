@@ -47,6 +47,7 @@ jobs:
       - name: Create Pull Request for Bluesky metadata
         # A no-op PR is created if the script updated any files, but will skip step if no changes
         if: ${{ steps.bluesky-post.outputs.UPDATED_FILES && steps.bluesky-post.outputs.UPDATED_FILES != '0' }}
+        id: bluesky-create-pr
         uses: peter-evans/create-pull-request@v6
         with:
           branch: automation/bluesky-metadata
@@ -61,3 +62,11 @@ jobs:
           add-paths: |
             src/lib/blog/posts/*.md
             src/lib/recipes/posts/*.md
+
+      - name: Enable auto-merge for Blueskey metadata PR
+        if: ${{ steps.bluesky-post.outputs.UPDATED_FILES && steps.bluesky-post.outputs.UPDATED_FILES != '0' && steps.bluesky-create-pr.outputs.pull-request-number }}
+        uses: peter-evans/enable-pull-request-automerge@v2
+        with:
+          token: ${{ secrets.GHA_BLUESKY_PR_PAT_TOKEN }}
+          pull-request-number: ${{ steps.bluesky-create-pr.outputs.pull-request-number }}
+          merge-method: merge

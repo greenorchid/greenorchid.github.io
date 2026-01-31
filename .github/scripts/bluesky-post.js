@@ -225,10 +225,10 @@ async function main() {
 
 	if (updatedFiles.length > 0) {
 		console.log(`UPDATED_FILES=${updatedFiles.length}`);
-	appendFileSync(process.env.GITHUB_OUTPUT, `UPDATED_FILES=${updatedFiles.length}\n`);
-} else {
-	appendFileSync(process.env.GITHUB_OUTPUT, `UPDATED_FILES=0\n`);
-}
+		appendFileSync(process.env.GITHUB_OUTPUT, `UPDATED_FILES=${updatedFiles.length}\n`);
+	} else {
+		appendFileSync(process.env.GITHUB_OUTPUT, `UPDATED_FILES=0\n`);
+	}
 
 	console.log('\n✅ Bluesky auto-post completed successfully!');
 }

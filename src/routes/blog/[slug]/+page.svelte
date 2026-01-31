@@ -98,24 +98,22 @@
 						</span>
 					</Tooltip>
 
-					<BlueskyButton
-						href="https://bsky.app/intent/compose?text={encodeURIComponent(
-							`Read "${post.title}" by @${CONFIG.blueskyHandle}\n\n${page.url.href}`
-						)}"
-					/>
+					<div class="flex flex-wrap items-center gap-4">
+						<BlueskyButton
+							href="https://bsky.app/intent/compose?text={encodeURIComponent(
+								`Read "${post.title}" by @${CONFIG.blueskyHandle}\n\n${page.url.href}`
+							)}"
+						/>
 
-					{#if post.blueskyUri}
-						<a
-							href="https://bsky.app/profile/{post.blueskyUri.split('/')[2]}/post/{post.blueskyUri
-								.split('/')
-								.pop()}"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="text-sm text-blue-600 hover:underline dark:text-blue-400"
-						>
-							View on Bluesky
-						</a>
-					{/if}
+						{#if post.blueskyUri}
+							<BlueskyButton
+								href="https://bsky.app/profile/{post.blueskyUri.split('/')[2]}/post/{post.blueskyUri
+									.split('/')
+									.pop()}"
+								text="View on Bluesky"
+							/>
+						{/if}
+					</div>
 				</div>
 			</header>
 

@@ -1,5 +1,6 @@
 <script lang="ts">
 	/* eslint-disable svelte/no-navigation-without-resolve */
+	import { onMount } from 'svelte';
 	import 'highlight.js/styles/github-dark.css';
 	import IngredientsList from '$lib/components/IngredientsList.svelte';
 	import { goto } from '$app/navigation';
@@ -9,9 +10,14 @@
 	import { CONFIG } from '$lib/config';
 	import BlueskyComments from '$lib/components/bluesky/BlueskyComments.svelte';
 	import BlueskyButton from '$lib/components/bluesky/BlueskyButton.svelte';
+	import { initializeAgent } from '$lib/components/bluesky/client';
 
 	let { data } = $props();
 	const recipe = $derived(data.post);
+
+	onMount(() => {
+		initializeAgent();
+	});
 </script>
 
 {#if recipe}
@@ -53,24 +59,22 @@
 							{/each}
 						{/if}
 					</div>
-					<BlueskyButton
-						href="https://bsky.app/intent/compose?text={encodeURIComponent(
-							`Read "${recipe.title}" by @${CONFIG.blueskyHandle}\n\n${page.url.href}`
-						)}"
-					/>
+					<div class="flex flex-wrap items-center gap-4">
+						<BlueskyButton
+							href="https://bsky.app/intent/compose?text={encodeURIComponent(
+								`Read "${recipe.title}" by @${CONFIG.blueskyHandle}\n\n${page.url.href}`
+							)}"
+						/>
 
-					{#if recipe.blueskyUri}
-						<a
-							href="https://bsky.app/profile/{recipe.blueskyUri.split(
-								'/'
-							)[2]}/post/{recipe.blueskyUri.split('/').pop()}"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="text-sm text-blue-600 hover:underline dark:text-blue-400"
-						>
-							View on Bluesky
-						</a>
-					{/if}
+						{#if recipe.blueskyUri}
+							<BlueskyButton
+								href="https://bsky.app/profile/{recipe.blueskyUri.split(
+									'/'
+								)[2]}/post/{recipe.blueskyUri.split('/').pop()}"
+								text="View on Bluesky"
+							/>
+						{/if}
+					</div>
 				</div>
 			</header>
 
@@ -84,11 +88,10 @@
 				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 				{@html recipe.html}
 			</div>
+			{#if recipe.blueskyUri}
+				<BlueskyComments postUri={recipe.blueskyUri} />
+			{/if}
 		</div>
-
-		{#if recipe.blueskyUri}
-			<BlueskyComments postUri={recipe.blueskyUri} />
-		{/if}
 	</article>
 {/if}
 

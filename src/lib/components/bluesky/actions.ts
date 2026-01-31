@@ -130,8 +130,20 @@ export async function getTimeline() {
 
 export async function getComments(uri: string) {
 	try {
-		const agent = blueskyStore.agent || new BskyAgent({ service: 'https://api.bsky.app' });
-		const response = await agent.getPostThread({ uri });
+		// Try with authenticated agent first if available
+		if (blueskyStore.agent) {
+			try {
+				const response = await blueskyStore.agent.getPostThread({ uri });
+				return response.data.thread;
+			} catch (authError) {
+				logger.warn('Failed to fetch comments with auth agent, falling back to guest:', authError);
+				// Fallthrough to guest agent
+			}
+		}
+
+		// Fallback to guest agent
+		const guestAgent = new BskyAgent({ service: 'https://api.bsky.app' });
+		const response = await guestAgent.getPostThread({ uri });
 		return response.data.thread;
 	} catch (error) {
 		logger.error('Failed to fetch comments:', error);

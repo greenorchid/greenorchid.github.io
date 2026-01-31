@@ -13,7 +13,7 @@
 
 	// Reactively fetch thread when agent is ready
 	$effect(() => {
-		if (postUri && blueskyStore.agent && !hasFetched) {
+		if (postUri && !blueskyStore.isLoading && !hasFetched) {
 			hasFetched = true;
 			(async () => {
 				thread = await getComments(postUri);

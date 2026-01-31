@@ -84,15 +84,33 @@ async function postToBluesky(agent, title, excerpt, url) {
 function updateMarkdownWithUri(filePath, blueskyUri) {
 	try {
 		const content = readFileSync(filePath, 'utf-8');
-		const { data: frontmatter, content: body } = matter(content);
+		let updatedContent;
 
-		// Add blueskyUri to frontmatter
-		frontmatter.blueskyUri = blueskyUri;
+		// Check if blueskyUri already exists (shouldn't happen given the filter, but good for safety)
+		if (content.match(/^blueskyUri:.*$/m)) {
+			updatedContent = content.replace(/^blueskyUri:.*$/m, `blueskyUri: '${blueskyUri}'`);
+		} else {
+			// Check for end of frontmatter (---)
+			// We look for the second occurrence of ---
+			const parts = content.split(/^---$/m);
 
-		// Reconstruct the file with updated frontmatter
-		const updatedContent = matter.stringify(body, frontmatter);
+			if (parts.length >= 3) {
+				// parts[0] is usually empty (before first ---)
+				// parts[1] is frontmatter
+				// parts[2] is body
+				// We append blueskyUri to parts[1]
+				parts[1] += `blueskyUri: '${blueskyUri}'\n`;
+				updatedContent = parts.join('---');
+			} else {
+				// Fallback if frontmatter structure isn't standard
+				console.warn(
+					`Warning: Could not strictly parse frontmatter in ${filePath}, appending to top.`
+				);
+				updatedContent = `---\nblueskyUri: '${blueskyUri}'\n---\n` + content;
+			}
+		}
+
 		writeFileSync(filePath, updatedContent, 'utf-8');
-
 		console.log(`✓ Updated ${filePath} with blueskyUri`);
 		return true;
 	} catch (error) {

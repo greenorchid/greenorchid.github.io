@@ -91,9 +91,9 @@ function parseMarkdown(content: string, slug: string): RecipePost {
 	const ingredientsMatch = frontmatter.match(/^ingredients:\s*\n((?:\s*-\s*.+\n?)*)/m);
 	const servingsMatch = frontmatter.match(/^servings:\s*(\d+(?:\.\d+)?)\s*$/m);
 
-	const title = titleMatch ? titleMatch[1].trim() : 'Untitled';
-	const date = dateMatch ? dateMatch[1].trim() : new Date().toISOString().split('T')[0];
-	const excerpt = excerptMatch ? excerptMatch[2].trim() : '';
+	const title = titleMatch ? (titleMatch[1] || '').trim() : 'Untitled';
+	const date = dateMatch ? (dateMatch[1] || '').trim() : new Date().toISOString().split('T')[0];
+	const excerpt = excerptMatch ? (excerptMatch[2] || excerptMatch[1] || '').trim() : '';
 
 	// Parse tags - support array format [tag1, tag2] or comma-separated string "tag1, tag2"
 	let tags: string[] = [];
@@ -122,6 +122,14 @@ function parseMarkdown(content: string, slug: string): RecipePost {
 	// Parse servings
 	const servings = servingsMatch ? parseFloat(servingsMatch[1]) : undefined;
 
+	// Parse blueskyUri
+	const blueskyUriMatch =
+		frontmatter.match(/^blueskyUri:\s*["'](.+?)["']/m) ||
+		frontmatter.match(/^blueskyUri:\s*(.+)$/m);
+	const blueskyUri = blueskyUriMatch
+		? (blueskyUriMatch[1] || blueskyUriMatch[0]).replace(/^blueskyUri:\s*["']?|["']?$/g, '').trim()
+		: undefined;
+
 	// Convert markdown to HTML
 	let html = marked(markdownContent) as string;
 
@@ -136,6 +144,7 @@ function parseMarkdown(content: string, slug: string): RecipePost {
 		tags,
 		ingredients,
 		servings,
+		blueskyUri,
 		content: markdownContent,
 		html
 	};

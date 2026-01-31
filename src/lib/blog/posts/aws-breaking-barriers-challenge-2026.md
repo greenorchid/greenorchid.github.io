@@ -4,6 +4,7 @@ date: '2026-01-16'
 excerpt: 'Reflecting on a 3-day hackathon helping the Irish Refugee Council build an AI-powered chatbot with AWS Bedrock.'
 tags: ['AWS', 'AI', 'Hackathon', 'Social Impact', 'Chatbot', 'Bedrock', 'Breaking Barriers']
 aiContributions: 'none'
+blueskyUri: 'at://did:plc:oo4sqwem2prw2yebqexllrx3/app.bsky.feed.post/3mdqxlszoih2l'
 ---
 
 I recently had the privilege of participating in the [AWS Breaking Barriers Challenge 2026](https://aws.amazon.com/events/aws-breaking-barriers-challenge/), a hackathon spanning three locations—Manchester, London, and Dublin—over three intense and rewarding days. The mission was clear: pair tech teams with charities to see if we could deliver real, tangible innovation to support their critical work.

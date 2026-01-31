@@ -27,7 +27,7 @@ Go to your GitHub repository:
 #### `BLUESKY_APP_PASSWORD`
 
 - **Value**: The app password you created in step 1
-- ⚠️ **Important**: Use the app password, NOT your main Bluesky password
+- **Important**: Use the app password, NOT your main Bluesky password
 
 ### 3. Update Site URL (Optional)
 
@@ -35,30 +35,9 @@ If your site URL is different from `https://behan.dev`, update it in:
 
 - `.github/workflows/bluesky-auto-post.yml` (line with `SITE_URL`)
 
-### 4. Testing
+### 4. Main branch only
 
-The workflow is currently configured to run on **all branches** for testing purposes.
-
-To test:
-
-1. Create a new branch
-2. Add a new blog post or recipe without a `blueskyUri` field
-3. Commit and push
-4. Check the Actions tab to see the workflow run
-5. If successful, the post will be shared on Bluesky and the file will be updated with the `blueskyUri`
-
-### 5. Production (Main Branch Only)
-
-Once testing is complete, restrict the workflow to the `main` branch:
-
-Edit `.github/workflows/bluesky-auto-post.yml`:
-
-```yaml
-on:
-  push:
-    branches:
-      - main # Change from '**' to 'main'
-```
+The workflow is currently configured to run on **main** branch.
 
 ## How It Works
 

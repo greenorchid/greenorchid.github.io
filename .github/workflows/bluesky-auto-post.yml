@@ -63,10 +63,8 @@ jobs:
             src/lib/blog/posts/*.md
             src/lib/recipes/posts/*.md
 
-      - name: Enable auto-merge for Blueskey metadata PR
+      - name: Merge Bluesky metadata PR
         if: ${{ steps.bluesky-post.outputs.UPDATED_FILES && steps.bluesky-post.outputs.UPDATED_FILES != '0' && steps.bluesky-create-pr.outputs.pull-request-number }}
-        uses: peter-evans/enable-pull-request-automerge@v2
-        with:
-          token: ${{ secrets.GHA_BLUESKY_PR_PAT_TOKEN }}
-          pull-request-number: ${{ steps.bluesky-create-pr.outputs.pull-request-number }}
-          merge-method: merge
+        run: |
+          gh auth login --with-token <<< "${{ secrets.GHA_BLUESKY_PR_PAT_TOKEN }}"
+          gh pr merge ${{ steps.bluesky-create-pr.outputs.pull-request-number }} --merge --delete-branch

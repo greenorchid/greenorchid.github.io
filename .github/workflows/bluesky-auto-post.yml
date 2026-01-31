@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: write # Required to commit changes back
+  pull-requests: write # Required to create pull requests for bluesky metadata
 
 jobs:
   bluesky-post:

@@ -35,6 +35,7 @@ jobs:
           npm install @atproto/api gray-matter glob
 
       - name: Post to Bluesky
+        id: bluesky-post
         env:
           BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
@@ -42,17 +43,9 @@ jobs:
         run: |
           node .github/scripts/bluesky-post.js
 
-      - name: Check for changes
-        id: check_changes
-        run: |
-          if [[ -n $(git status --porcelain) ]]; then
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-          else
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-          fi
-
       - name: Create Pull Request for Bluesky metadata
-        if: steps.check_changes.outputs.has_changes == 'true'
+        # A no-op PR is created if the script updated any files, but will skip step if no changes
+        if: steps.bluesky-post.outputs.updated == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
           branch: automation/bluesky-metadata

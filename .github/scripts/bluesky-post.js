@@ -223,22 +223,8 @@ async function main() {
 		}
 	}
 
-	// Commit the changes if any files were updated
 	if (updatedFiles.length > 0) {
-		console.log(`\n📝 Committing ${updatedFiles.length} updated file(s)...`);
-		// Commit and push changes
-		try {
-			execSync('git config user.name "github-actions[bot]"');
-			execSync('git config user.email "github-actions[bot]@users.noreply.github.com"');
-			execSync('git add .');
-			const message = `chore: update bluesky URIs`;
-			execSync(`git commit -m "${message}"`);
-			execSync('git push');
-			console.log('Successfully committed and pushed changes.');
-		} catch (error) {
-			console.error('Error committing changes:', error.message);
-			process.exit(1);
-		}
+		console.log(`UPDATED_FILES=${updatedFiles.length}`);
 	}
 
 	console.log('\n✅ Bluesky auto-post completed successfully!');

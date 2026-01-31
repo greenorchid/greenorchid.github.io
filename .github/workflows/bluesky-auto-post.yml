@@ -50,6 +50,7 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           branch: automation/bluesky-metadata
+          token: ${{ secrets.GHA_BLUESKY_PR_PAT_TOKEN }}
           delete-branch: true
           title: 'chore: add Bluesky URIs to new posts'
           commit-message: 'chore: add Bluesky URIs to new posts [skip ci]'

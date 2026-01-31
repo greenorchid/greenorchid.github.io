@@ -1,6 +1,8 @@
 import { json } from '@sveltejs/kit';
 import { CONFIG } from '$lib/config';
 
+export const prerender = true;
+
 export const GET = () => {
 	const domain = CONFIG.domain;
 

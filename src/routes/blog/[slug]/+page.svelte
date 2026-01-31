@@ -100,7 +100,7 @@
 
 					<BlueskyButton
 						href="https://bsky.app/intent/compose?text={encodeURIComponent(
-							`Read \"${post.title}\" by @${CONFIG.blueskyHandle}\n\n${page.url.href}`
+							`Read "${post.title}" by @${CONFIG.blueskyHandle}\n\n${page.url.href}`
 						)}"
 					/>
 

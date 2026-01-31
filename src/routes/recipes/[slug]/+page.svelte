@@ -55,7 +55,7 @@
 					</div>
 					<BlueskyButton
 						href="https://bsky.app/intent/compose?text={encodeURIComponent(
-							`Read \"${recipe.title}\" by @${CONFIG.blueskyHandle}\n\n${page.url.href}`
+							`Read "${recipe.title}" by @${CONFIG.blueskyHandle}\n\n${page.url.href}`
 						)}"
 					/>
 

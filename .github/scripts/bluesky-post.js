@@ -2,7 +2,6 @@
 
 import { BskyAgent } from '@atproto/api';
 import matter from 'gray-matter';
-import { glob } from 'glob';
 import { readFileSync, writeFileSync } from 'fs';
 import { execSync } from 'child_process';
 
@@ -170,7 +169,7 @@ async function main() {
 				updatedFiles.push(filePath);
 			}
 		} catch (error) {
-			console.error(`✗ Failed to post: ${frontmatter.title}`);
+			console.error(`✗ Failed to post: ${frontmatter.title}. Error: ${error.message}`);
 			// Continue with other posts
 		}
 	}
@@ -200,7 +199,7 @@ async function main() {
 	console.log('\n✅ Bluesky auto-post completed successfully!');
 }
 
-main().catch((error) => {
-	console.error('Fatal error:', error);
+main().catch(() => {
+	console.error('Fatal error');
 	process.exit(1);
 });

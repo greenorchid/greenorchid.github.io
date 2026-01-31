@@ -108,11 +108,9 @@ export async function initializeAgent() {
 									requestUrlObj.pathname + requestUrlObj.search + requestUrlObj.hash;
 							}
 						} catch {
-							// fallback to original behavior if URL parsing fails (unlikely for valid requests)
-							if (actualUrl.startsWith(serviceUrl)) {
-								finalRequestInfo = actualUrl.slice(serviceUrl.length);
-								if (!finalRequestInfo.startsWith('/')) finalRequestInfo = '/' + finalRequestInfo;
-							}
+							// If URL parsing fails, fall back to using the original URL without
+							// attempting substring-based manipulation that could mis-handle hosts.
+							finalRequestInfo = actualUrl;
 						}
 
 						return fetchFn.call(session, finalRequestInfo, forwardInit);

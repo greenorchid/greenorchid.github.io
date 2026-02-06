@@ -4,6 +4,7 @@ date: '2026-01-18'
 excerpt: 'Reflections from the National Open Source Innovation Summit 2026 on how open source, AI, regulation, and trust frameworks are shaping Europe’s digital future.'
 tags: ['National Open Source Innovation Summit 2026', 'open source', 'AI', 'regulation', 'europe', 'trust', 'sovereignty']
 aiContributions: 'none'
+blueskyUri: 'at://did:plc:oo4sqwem2prw2yebqexllrx3/app.bsky.feed.post/3me7q67jzrb27'
 ---
 
 # Building Roads & Bridges: Open Source, AI, and Europe’s Innovation Future

@@ -14,7 +14,8 @@
 		"test:unit": "vitest --run",
 		"test:e2e": "playwright test",
 		"format": "prettier --write .",
-		"lint": "prettier --check . && eslint ."
+		"lint": "prettier --check . && eslint .",
+		"lint:fix": "prettier --write . && eslint . --fix"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^2.0.1",

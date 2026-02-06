@@ -76,7 +76,7 @@ The roads and bridges are being built — across communities, sectors, and borde
 
 Thank you to all the speakers and participants for sharing their insights and experiences. I look forward to seeing what the future holds for us all in the world of open source innovation!
 
-## Appendix: *Personal* Summit Notes & Key Themes
+## Appendix: _Personal_ Summit Notes & Key Themes
 
 - **Core Themes**
   - Open source as shared digital infrastructure (“roads & bridges”)

@@ -2,7 +2,16 @@
 title: 'Building Roads & Bridges: Open Source, AI, and Europe’s Innovation Future'
 date: '2026-01-18'
 excerpt: 'Reflections from the National Open Source Innovation Summit 2026 on how open source, AI, regulation, and trust frameworks are shaping Europe’s digital future.'
-tags: ['National Open Source Innovation Summit 2026', 'open source', 'AI', 'regulation', 'europe', 'trust', 'sovereignty']
+tags:
+  [
+    'National Open Source Innovation Summit 2026',
+    'open source',
+    'AI',
+    'regulation',
+    'europe',
+    'trust',
+    'sovereignty'
+  ]
 aiContributions: 'none'
 ---
 
@@ -62,7 +71,7 @@ The discussion demonstrated that even in highly regulated environments, open sou
 
 The National Open Source Innovation Summit 2026 reinforced that open source innovation is now defined by ecosystem collaboration. From AI and regulation to trust frameworks and sovereignty, open source is increasingly central to how Europe builds resilient, transparent, and future-ready digital infrastructure.
 
-The roads and bridges are being built — across communities, sectors, and borders. The next challenge is using them effectively. 
+The roads and bridges are being built — across communities, sectors, and borders. The next challenge is using them effectively.
 
 Thank you to all the speakers and participants for sharing their insights and experiences. I look forward to seeing what the future holds for us all in the world of open source innovation!
 
@@ -103,7 +112,7 @@ Thank you to all the speakers and participants for sharing their insights and ex
   - OSPOs as governance hubs
   - Procurement reform for OSS sustainability
   - Skills, education, and maturity models
-    -  Especially in procurement/challenge "buy safety"/"fear of jeopardising career"
+    - Especially in procurement/challenge "buy safety"/"fear of jeopardising career"
 - **Industry Adoption**
   - Financial Services as a leading example
   - Balancing regulation, innovation, and collaboration

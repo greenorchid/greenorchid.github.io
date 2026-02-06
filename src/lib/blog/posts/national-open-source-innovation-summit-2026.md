@@ -13,6 +13,7 @@ tags:
     'sovereignty'
   ]
 aiContributions: 'none'
+blueskyUri: 'at://did:plc:oo4sqwem2prw2yebqexllrx3/app.bsky.feed.post/3me7sk4nm2a23'
 ---
 
 # Building Roads & Bridges: Open Source, AI, and Europe’s Innovation Future

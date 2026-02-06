@@ -57,7 +57,7 @@ export function getPostBySlug(slug: string): BlogPost | null {
 	return parseMarkdown(content, slug);
 }
 
-function parseMarkdown(content: string, slug: string): BlogPost {
+export function parseMarkdown(content: string, slug: string): BlogPost {
 	// Parse frontmatter - allow \r\n and optional spaces
 	const frontmatterRegex = /^---\s*\r?\n([\s\S]*?)\r?\n---\s*\r?\n?([\s\S]*)$/;
 	const match = content.match(frontmatterRegex);
@@ -91,8 +91,8 @@ function parseMarkdown(content: string, slug: string): BlogPost {
 	const excerptMatch =
 		frontmatter.match(/^excerpt:\s*["'](.+?)["']/m) || frontmatter.match(/^excerpt:\s*(.+)$/m);
 	const tagsMatch =
-		frontmatter.match(/^tags:\s*\[(.+?)\]/m) ||
-		frontmatter.match(/^tags:\s*["'](.+?)["']/m) ||
+		frontmatter.match(/^tags:\s*\[([\s\S]+?)\]/m) ||
+		frontmatter.match(/^tags:\s*["']([\s\S]+?)["']/m) ||
 		frontmatter.match(/^tags:\s*(.+)$/m);
 	const aiContributionsMatch =
 		frontmatter.match(/^aiContributions:\s*["'](.+?)["']/m) ||

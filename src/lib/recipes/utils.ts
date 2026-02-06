@@ -65,7 +65,7 @@ export function getPostBySlug(slug: string): RecipePost | null {
 	return parseMarkdown(content, slug);
 }
 
-function parseMarkdown(content: string, slug: string): RecipePost {
+export function parseMarkdown(content: string, slug: string): RecipePost {
 	// Parse frontmatter
 	const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
 	const frontmatterMatch = content.match(frontmatterRegex);
@@ -85,8 +85,8 @@ function parseMarkdown(content: string, slug: string): RecipePost {
 	const excerptMatch =
 		frontmatter.match(/^excerpt:\s*(["'])(.+?)\1/m) || frontmatter.match(/^excerpt:\s*(.+)$/m);
 	const tagsMatch =
-		frontmatter.match(/^tags:\s*\[(.+?)\]/m) ||
-		frontmatter.match(/^tags:\s*["'](.+?)["']/m) ||
+		frontmatter.match(/^tags:\s*\[([\s\S]+?)\]/m) ||
+		frontmatter.match(/^tags:\s*["']([\s\S]+?)["']/m) ||
 		frontmatter.match(/^tags:\s*(.+)$/m);
 	const ingredientsMatch = frontmatter.match(/^ingredients:\s*\n((?:\s*-\s*.+\n?)*)/m);
 	const servingsMatch = frontmatter.match(/^servings:\s*(\d+(?:\.\d+)?)\s*$/m);

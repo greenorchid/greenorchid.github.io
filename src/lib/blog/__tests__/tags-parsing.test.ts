@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseMarkdown } from '../utils';
+import { parseMarkdownFile } from '../utils';
 
 describe('Tags Parsing', () => {
 	it('should parse simple array tags', () => {
@@ -11,7 +11,7 @@ tags: ['tag1', 'tag2']
 aiContributions: 'none'
 ---
 # Content`;
-		const post = parseMarkdown(content, 'test');
+		const post = parseMarkdownFile(content, 'test');
 		expect(post.tags).toEqual(['tag1', 'tag2']);
 	});
 
@@ -28,7 +28,7 @@ tags:
 aiContributions: 'none'
 ---
 # Content`;
-		const post = parseMarkdown(content, 'test');
+		const post = parseMarkdownFile(content, 'test');
 		expect(post.tags).toEqual(['tag1', 'tag2']);
 	});
 
@@ -41,7 +41,7 @@ tags: 'tag1, tag2'
 aiContributions: 'none'
 ---
 # Content`;
-		const post = parseMarkdown(content, 'test');
+		const post = parseMarkdownFile(content, 'test');
 		expect(post.tags).toEqual(['tag1', 'tag2']);
 	});
 });

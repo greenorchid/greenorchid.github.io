@@ -77,7 +77,9 @@
 					>
 						{post.title}
 					</h2>
-					<p class="mb-2 text-sm text-gray-500 dark:text-gray-400">{post.date}</p>
+					<p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+						{post.date} • {post.readingTime} min read
+					</p>
 					<p class="mb-4 line-clamp-4 text-gray-700 dark:text-gray-300">{post.excerpt}</p>
 					{#if post.tags.length > 0}
 						<div class="mt-4 flex flex-wrap gap-2">

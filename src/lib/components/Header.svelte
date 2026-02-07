@@ -4,7 +4,8 @@
 	import LogoAnimated from '$lib/components/LogoAnimated.svelte';
 	import FontSizePopover from '$lib/components/FontSizePopover.svelte';
 	import ReducedMotionToggle from '$lib/components/ReducedMotionToggle.svelte';
-	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
+	import ModeToggle from '$lib/components/ModeToggle.svelte';
+	import StyleToggle from '$lib/components/StyleToggle.svelte';
 	import HamburgerMenu from '$lib/components/HamburgerMenu.svelte';
 
 	import { page } from '$app/stores';
@@ -78,7 +79,7 @@
 	class="sticky top-0 z-50 flex items-center justify-between bg-white p-4 shadow-sm dark:bg-gray-900"
 >
 	<!-- Logo and brand on left -->
-	<div class="flex items-center gap-3">
+	<div class="flex flex-shrink-0 items-center gap-3">
 		<a href="{base}/" class="flex items-center gap-3">
 			<LogoAnimated size={40} />
 			<span class="text-lg font-semibold text-gray-900 dark:text-gray-100">{CONFIG.siteName}</span>
@@ -130,10 +131,11 @@
 	</div>
 
 	<!-- Desktop accessibility -->
-	<div class="hidden gap-2 md:flex">
+	<div class="hidden flex-shrink-0 items-center gap-4 md:flex">
 		<FontSizePopover mobile={false} />
 		<ReducedMotionToggle mobile={false} />
-		<ThemeToggle mobile={false} />
+		<ModeToggle mobile={false} />
+		<StyleToggle mobile={false} />
 	</div>
 
 	<!-- Nav dropdown (mobile) -->
@@ -177,6 +179,11 @@
 		<div class="mb-2">
 			<ReducedMotionToggle mobile={true} />
 		</div>
-		<ThemeToggle mobile={true} />
+		<div class="mb-2">
+			<ModeToggle mobile={true} />
+		</div>
+		<div class="mb-2">
+			<StyleToggle mobile={true} />
+		</div>
 	</div>
 </header>

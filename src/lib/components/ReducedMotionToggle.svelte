@@ -7,22 +7,19 @@
 	let reducedMotion = $state<'true' | 'false'>('false');
 
 	onMount(() => {
-		// Check localStorage first, then system preference
 		const stored = localStorage.getItem('reduced-motion');
 		if (stored === 'true' || stored === 'false') {
 			reducedMotion = stored;
 		} else {
-			// Check system preference
 			reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 				? 'true'
 				: 'false';
 		}
 		applyReducedMotion(reducedMotion);
 
-		// Listen for system reducedMotion changes
 		const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 		const handleChange = (e: MediaQueryListEvent) => {
-			if (!localStorage.getItem('reducedMotion')) {
+			if (!localStorage.getItem('reduced-motion')) {
 				reducedMotion = e.matches ? 'true' : 'false';
 				applyReducedMotion(reducedMotion);
 			}
@@ -40,7 +37,7 @@
 		} else {
 			document.body.classList.remove('reduced-motion');
 		}
-		localStorage.setItem('reducedMotion', newReducedMotion);
+		localStorage.setItem('reduced-motion', newReducedMotion);
 	}
 
 	function toggleReducedMotion() {
@@ -49,7 +46,7 @@
 	}
 </script>
 
-<div class={mobile ? 'relative' : 'fixed top-4 right-18'}>
+<div class={mobile ? 'relative' : ''}>
 	<Tooltip
 		content={reducedMotion === 'true' ? 'Animations are disabled' : 'Animations are enabled'}
 		trigger="mouseenter focus"
@@ -64,12 +61,12 @@
 			type="button"
 		>
 			{#if reducedMotion === 'false'}
-				<!-- Motion OFF icon (pause / stop) -->
+				<!-- Animations ON -> Show Pause icon in Green -->
 				<svg
 					class="h-6 w-6"
 					viewBox="0 0 24 24"
 					fill="none"
-					stroke="#f87171"
+					stroke="#34d399"
 					stroke-width="2"
 					stroke-linecap="round"
 					stroke-linejoin="round"
@@ -78,12 +75,12 @@
 					<line x1="18" y1="4" x2="18" y2="20" />
 				</svg>
 			{:else}
-				<!-- Motion ON icon (play / animation) -->
+				<!-- Animations OFF -> Show Play icon in Red -->
 				<svg
 					class="h-6 w-6"
 					viewBox="0 0 24 24"
 					fill="none"
-					stroke="#34d399"
+					stroke="#f87171"
 					stroke-width="2"
 					stroke-linecap="round"
 					stroke-linejoin="round"

@@ -76,9 +76,7 @@
 </script>
 
 <!--<div class="group fixed relative top-4 right-54 z-[9998]">-->
-<div
-	class="{mobile ? 'relative' : 'fixed top-4 right-32'} popover-container flex items-center gap-2"
->
+<div class="{mobile ? 'relative' : ''} popover-container flex items-center gap-2">
 	{#if !mobile}
 		<Tooltip
 			content={`Font Size (Current ${currentScale}%)`}

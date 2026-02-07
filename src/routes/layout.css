@@ -4,8 +4,178 @@
 
 :root {
 	--font-scale: 1;
+	--bg-primary: #ffffff;
+	--text-primary: #111827;
+	--accent-color: 16, 185, 129; /* green-600 */
+	--particle-color: 16, 185, 129;
+	--card-bg: #f3f4f6;
+	--card-border: #e5e7eb;
+	--btn-bg: #e5e7eb;
+	--btn-hover: #d1d5db;
+	--overlay-opacity: 0.7;
+}
+
+[data-mode='dark'] {
+	--bg-primary: #111827;
+	--text-primary: #f9fafb;
+	--accent-color: 34, 197, 94; /* green-500 */
+	--particle-color: 34, 197, 94;
+	--card-bg: #1f2937;
+	--card-border: #374151;
+	--btn-bg: #1f2937;
+	--btn-hover: #374151;
+	--overlay-opacity: 0.75;
+}
+
+[data-theme='valentines'] {
+	--bg-primary: #fff1f2;
+	--text-primary: #881337;
+	--accent-color: 225, 29, 72;
+	--particle-color: 225, 29, 72;
+	--card-bg: #ffe4e6;
+	--card-border: #fda4af;
+}
+[data-theme='valentines'][data-mode='dark'] {
+	--bg-primary: #4c0519;
+	--text-primary: #ffe4e6;
+	--card-bg: #881337;
+	--card-border: #9f1239;
+}
+
+[data-theme='st-patricks'] {
+	--bg-primary: #f0fdf4;
+	--text-primary: #14532d;
+	--accent-color: 22, 163, 74;
+	--particle-color: 22, 163, 74;
+	--card-bg: #dcfce7;
+	--card-border: #86efac;
+}
+[data-theme='st-patricks'][data-mode='dark'] {
+	--bg-primary: #052e16;
+	--text-primary: #dcfce7;
+	--card-bg: #14532d;
+	--card-border: #166534;
+}
+
+[data-theme='christmas'] {
+	--bg-primary: #fef2f2;
+	--text-primary: #7c2d12;
+	--accent-color: 220, 38, 38;
+	--particle-color: 22, 101, 52;
+	--card-bg: #fee2e2;
+	--card-border: #fecaca;
+}
+[data-theme='christmas'][data-mode='dark'] {
+	--bg-primary: #450a0a;
+	--text-primary: #fee2e2;
+	--card-bg: #7c2d12;
+	--card-border: #9a3412;
+}
+
+[data-theme='easter'] {
+	--bg-primary: #fffef2;
+	--text-primary: #713f12;
+	--accent-color: 234, 179, 8;
+	--particle-color: 244, 114, 182;
+	--card-bg: #fef9c3;
+	--card-border: #fde047;
+}
+[data-theme='easter'][data-mode='dark'] {
+	--bg-primary: #3d3000;
+	--text-primary: #fef08a;
+	--card-bg: #4a3e00;
+	--card-border: #713f12;
+}
+
+[data-theme='spring'] {
+	--bg-primary: #fff1f2;
+	--text-primary: #831843;
+	--accent-color: 219, 39, 119;
+	--particle-color: 251, 113, 133;
+	--card-bg: #ffe4e6;
+	--card-border: #fecdd3;
+}
+[data-theme='spring'][data-mode='dark'] {
+	--bg-primary: #500724;
+	--text-primary: #ffe4e6;
+	--card-bg: #831843;
+	--card-border: #9d174d;
+}
+
+[data-theme='summer'] {
+	--bg-primary: #fffbeb;
+	--text-primary: #78350f;
+	--accent-color: 217, 119, 6;
+	--particle-color: 245, 158, 11;
+	--card-bg: #fef3c7;
+	--card-border: #fcd34d;
+}
+[data-theme='summer'][data-mode='dark'] {
+	--bg-primary: #451a03;
+	--text-primary: #fef3c7;
+	--card-bg: #78350f;
+	--card-border: #92400e;
+}
+
+[data-theme='autumn'] {
+	--bg-primary: #fff7ed;
+	--text-primary: #7c2d12;
+	--accent-color: 194, 65, 12;
+	--particle-color: 234, 88, 12;
+	--card-bg: #ffedd5;
+	--card-border: #fed7aa;
+}
+[data-theme='autumn'][data-mode='dark'] {
+	--bg-primary: #431407;
+	--text-primary: #ffedd5;
+	--card-bg: #7c2d12;
+	--card-border: #9a3412;
+}
+
+[data-theme='halloween'] {
+	--bg-primary: #1e1b4b; /* Deep Indigo instead of near-black */
+	--text-primary: #f97316;
+	--accent-color: 249, 115, 22;
+	--particle-color: 249, 115, 22;
+	--card-bg: #2d2a5d;
+	--card-border: #ea580c;
+	--btn-bg: #2d2a5d;
+	--btn-hover: #374151;
+}
+[data-theme='halloween'][data-mode='dark'] {
+	--bg-primary: #020617;
+	--card-bg: #0f172a;
+}
+
+[data-theme='new-year'] {
+	--bg-primary: #e5e7eb;
+	--text-primary: #0f172a;
+	--accent-color: 37, 99, 235;
+	--particle-color: 244, 63, 94;
+	--card-bg: #f1f5f9;
+	--card-border: #e2e8f0;
+	--btn-bg: #e2e8f0;
+	--btn-hover: #cbd5e1;
+	--clear-color: 229, 231, 235; /* #e5e7eb in RGB */
+}
+[data-theme='new-year'][data-mode='dark'] {
+	--bg-primary: #020617;
+	--text-primary: #f8fafc;
+	--card-bg: #0f172a;
+	--card-border: #1e293b;
+	--btn-bg: #0f172a;
+	--btn-hover: #1e293b;
+	--clear-color: 2, 6, 23; /* #020617 in RGB */
 }
 
 html {
 	font-size: calc(100% * var(--font-scale));
+	background-color: transparent;
+	color: var(--text-primary);
+	transition: color 0.3s ease;
+}
+
+body {
+	background-color: var(--bg-primary);
+	transition: background-color 0.3s ease;
 }

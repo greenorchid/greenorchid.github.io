@@ -1,6 +1,9 @@
 import { marked } from 'marked';
 import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
+import * as grayMatter from 'gray-matter';
+
+const matter = grayMatter.default || grayMatter;
 
 // Configure marked with syntax highlighting
 marked.use(
@@ -16,8 +19,19 @@ marked.use(
 export interface Ingredient {
 	name: string;
 	amount: number;
-	unit?: string; // e.g., "ml", "g", "kg", "cups", "tsp", "tbsp"
-	notes?: string; // optional notes like "chopped", "finely diced"
+	unit?: string;
+	notes?: string;
+}
+
+interface Frontmatter {
+	title?: string;
+	date?: string | Date;
+	excerpt?: string;
+	tags?: string | string[];
+	ingredients?: string[] | Ingredient[];
+	servings?: number;
+	blueskyUri?: string;
+	[key: string]: string | string[] | Ingredient[] | number | Date | undefined;
 }
 
 export interface RecipePost {
@@ -33,7 +47,6 @@ export interface RecipePost {
 	blueskyUri?: string;
 }
 
-// Load all markdown files from the posts directory
 const postsModules = import.meta.glob('/src/lib/recipes/posts/*.md', {
 	eager: true,
 	query: '?raw',
@@ -42,169 +55,152 @@ const postsModules = import.meta.glob('/src/lib/recipes/posts/*.md', {
 
 export function getAllRecipes(): RecipePost[] {
 	const posts: RecipePost[] = [];
-
 	for (const [path, content] of Object.entries(postsModules)) {
 		const slug = path.split('/').pop()?.replace('.md', '') || '';
 		const rawContent = content as string;
 		const post = parseMarkdown(rawContent, slug);
 		posts.push(post);
 	}
-
-	// Sort by date (newest first)
 	return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 export function getPostBySlug(slug: string): RecipePost | null {
 	const path = `/src/lib/recipes/posts/${slug}.md`;
 	const content = postsModules[path] as string | undefined;
-
-	if (!content) {
-		return null;
-	}
-
+	if (!content) return null;
 	return parseMarkdown(content, slug);
 }
 
 export function parseMarkdown(content: string, slug: string): RecipePost {
-	// Parse frontmatter
-	const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
-	const frontmatterMatch = content.match(frontmatterRegex);
+	try {
+		const parts = content.split(/^---/m);
+		if (parts.length < 3) throw new Error(`Invalid markdown format for post: ${slug}`);
 
-	if (!frontmatterMatch) {
-		throw new Error(`Invalid markdown format for post: ${slug}`);
-	}
+		const frontmatter = parts[1].trim();
+		const markdownContent = parts.slice(2).join('---').trim();
 
-	const frontmatter = frontmatterMatch[1];
-	const markdownContent = frontmatterMatch[2];
+		let data: Frontmatter = {};
+		try {
+			data = matter(`---\n${frontmatter}\n---`).data as Frontmatter;
+		} catch (e) {
+			console.warn(`gray-matter failed for recipe ${slug}, attempting manual parse`, e);
+			const lines = frontmatter.split('\n');
+			let inTags = false;
+			let tagContent = '';
 
-	// Parse frontmatter fields
-	const titleMatch =
-		frontmatter.match(/^title:\s*["'](.+?)["']/m) || frontmatter.match(/^title:\s*(.+)$/m);
-	const dateMatch =
-		frontmatter.match(/^date:\s*["'](.+?)["']/m) || frontmatter.match(/^date:\s*(.+)$/m);
-	const excerptMatch =
-		frontmatter.match(/^excerpt:\s*(["'])(.+?)\1/m) || frontmatter.match(/^excerpt:\s*(.+)$/m);
-	const tagsMatch =
-		frontmatter.match(/^tags:\s*\[([\s\S]+?)\]/m) ||
-		frontmatter.match(/^tags:\s*["']([\s\S]+?)["']/m) ||
-		frontmatter.match(/^tags:\s*(.+)$/m);
-	const ingredientsMatch = frontmatter.match(/^ingredients:\s*\n((?:\s*-\s*.+\n?)*)/m);
-	const servingsMatch = frontmatter.match(/^servings:\s*(\d+(?:\.\d+)?)\s*$/m);
-
-	const title = titleMatch ? (titleMatch[1] || '').trim() : 'Untitled';
-	const date = dateMatch ? (dateMatch[1] || '').trim() : new Date().toISOString().split('T')[0];
-	const excerpt = excerptMatch ? (excerptMatch[2] || excerptMatch[1] || '').trim() : '';
-
-	// Parse tags - support array format [tag1, tag2] or comma-separated string "tag1, tag2"
-	let tags: string[] = [];
-	if (tagsMatch) {
-		const tagsValue = tagsMatch[1].trim();
-		// Check if it's an array format
-		if (tagsValue.startsWith('[') && tagsValue.endsWith(']')) {
-			// Array format: [tag1, tag2] or ["tag1", "tag2"]
-			const arrayContent = tagsValue.slice(1, -1);
-			tags = arrayContent
-				.split(',')
-				.map((tag: string) => tag.trim().replace(/^["']|["']$/g, ''))
-				.filter((tag: string) => tag.length > 0);
-		} else {
-			// Comma-separated string format
-			tags = tagsValue
-				.split(',')
-				.map((tag: string) => tag.trim().replace(/^["']|["']$/g, ''))
-				.filter((tag: string) => tag.length > 0);
+			lines.forEach((line) => {
+				const trimmed = line.trim();
+				if (trimmed.startsWith('tags:')) {
+					const value = trimmed.slice(5).trim();
+					if (value.startsWith('[')) {
+						inTags = true;
+						tagContent = value;
+						if (value.endsWith(']')) inTags = false;
+					} else if (!value) {
+						// tags: followed by bracket on next line
+						inTags = true;
+						tagContent = '';
+					} else {
+						data.tags = value;
+					}
+				} else if (inTags) {
+					tagContent += ' ' + trimmed;
+					if (trimmed.endsWith(']')) inTags = false;
+				} else {
+					const colonIndex = line.indexOf(':');
+					if (colonIndex > 0) {
+						const key = line.slice(0, colonIndex).trim();
+						let value = line.slice(colonIndex + 1).trim();
+						if (value.startsWith("'") || value.startsWith('"')) value = value.slice(1, -1);
+						data[key] = value;
+					}
+				}
+			});
+			if (tagContent) data.tags = tagContent;
 		}
+
+		const title = data.title || 'Untitled';
+		const dateObj = data.date || new Date().toISOString().split('T')[0];
+		const date = typeof dateObj === 'string' ? dateObj : dateObj.toISOString().split('T')[0];
+		const excerpt = data.excerpt || '';
+
+		let tags: string[] = [];
+		const rawTags = data.tags;
+		if (rawTags) {
+			if (Array.isArray(rawTags)) {
+				tags = rawTags.map((t) => String(t).trim());
+			} else if (typeof rawTags === 'string') {
+				const cleanTags = rawTags.replace(/[[\]"']/g, '');
+				tags = cleanTags
+					.split(',')
+					.map((t) => t.trim())
+					.filter((t) => t.length > 0);
+			}
+		}
+
+		const ingredients = data.ingredients ? parseIngredients(data.ingredients) : [];
+		const servings = data.servings;
+		const blueskyUri = data.blueskyUri;
+
+		let html = marked(markdownContent) as string;
+		html = html.replace(/<h1[^>]*>.*?<\/h1>/i, '');
+
+		return {
+			slug,
+			title,
+			date,
+			excerpt,
+			tags,
+			ingredients,
+			servings,
+			blueskyUri,
+			content: markdownContent,
+			html
+		};
+	} catch (error) {
+		console.error(`Error parsing recipe: ${slug}`, error);
+		throw error;
 	}
+}
 
-	// Parse ingredients
-	const ingredients = ingredientsMatch ? parseIngredients(ingredientsMatch[1]) : [];
-
-	// Parse servings
-	const servings = servingsMatch ? parseFloat(servingsMatch[1]) : undefined;
-
-	// Parse blueskyUri
-	const blueskyUriMatch =
-		frontmatter.match(/^blueskyUri:\s*["'](.+?)["']/m) ||
-		frontmatter.match(/^blueskyUri:\s*(.+)$/m);
-	const blueskyUri = blueskyUriMatch
-		? (blueskyUriMatch[1] || blueskyUriMatch[0]).replace(/^blueskyUri:\s*["']?|["']?$/g, '').trim()
-		: undefined;
-
-	// Convert markdown to HTML
-	let html = marked(markdownContent) as string;
-
-	// Remove the main title (first h1) from HTML since it's already displayed above
-	html = html.replace(/<h1[^>]*>.*?<\/h1>/i, '');
-
-	return {
-		slug,
-		title,
-		date,
-		excerpt,
-		tags,
-		ingredients,
-		servings,
-		blueskyUri,
-		content: markdownContent,
-		html
-	};
+function parseIngredients(ingredientsData: string[] | Ingredient[]): Ingredient[] {
+	if (Array.isArray(ingredientsData)) {
+		return ingredientsData.map((item) => {
+			if (typeof item === 'string') {
+				const match = item.match(/(.+?):\s*(\d+(?:\.\d+)?)\s*([a-zA-Z%]+)?\s*(?:#\s*(.+?))?\s*$/);
+				if (match)
+					return {
+						name: match[1].trim(),
+						amount: parseFloat(match[2]),
+						unit: match[3],
+						notes: match[4]
+					};
+				return { name: item, amount: 0 };
+			}
+			return item as Ingredient;
+		});
+	}
+	return [];
 }
 
 export function getAllTags(): string[] {
 	const posts = getAllRecipes();
 	const tagSet = new Set<string>();
-	posts.forEach((post) => {
-		post.tags.forEach((tag) => tagSet.add(tag));
-	});
+	posts.forEach((p) => p.tags.forEach((t) => tagSet.add(t)));
 	return Array.from(tagSet).sort();
 }
 
 export function getPostsByTag(tag: string): RecipePost[] {
-	return getAllRecipes().filter((post) => post.tags.includes(tag));
+	return getAllRecipes().filter((p) => p.tags.includes(tag));
 }
 
-// Scale ingredients by a multiplier
 export function scaleIngredients(ingredients: Ingredient[], multiplier: number): Ingredient[] {
-	return ingredients.map((ingredient) => ({
-		...ingredient,
-		amount: ingredient.amount * multiplier
-	}));
+	return ingredients.map((i) => ({ ...i, amount: i.amount * multiplier }));
 }
 
-// Parse ingredients from markdown frontmatter
-function parseIngredients(ingredientsYaml: string): Ingredient[] {
-	if (!ingredientsYaml.trim()) return [];
-
-	const ingredients: Ingredient[] = [];
-	const lines = ingredientsYaml.trim().split('\n');
-
-	for (const line of lines) {
-		// Parse format: "- name: amount unit # notes"
-		const ingredientMatch = line.match(
-			/^\s*-\s*(.+?):\s*(\d+(?:\.\d+)?)\s*([a-zA-Z%]+)?\s*(?:#\s*(.+?))?\s*$/
-		);
-		if (ingredientMatch) {
-			const [, name, amount, unit, notes] = ingredientMatch;
-			ingredients.push({
-				name: name.trim(),
-				amount: parseFloat(amount),
-				unit: unit?.trim(),
-				notes: notes?.trim()
-			});
-		}
-	}
-
-	return ingredients;
-}
-
-// Format ingredient for display
 export function formatIngredient(ingredient: Ingredient): string {
 	let formatted = `${ingredient.name}: ${ingredient.amount}`;
-	if (ingredient.unit) {
-		formatted += ` ${ingredient.unit}`;
-	}
-	if (ingredient.notes) {
-		formatted += ` (${ingredient.notes})`;
-	}
+	if (ingredient.unit) formatted += ` ${ingredient.unit}`;
+	if (ingredient.notes) formatted += ` (${ingredient.notes})`;
 	return formatted;
 }

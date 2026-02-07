@@ -1,6 +1,9 @@
 import { marked } from 'marked';
 import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
+import * as grayMatter from 'gray-matter';
+
+const matter = grayMatter.default || grayMatter;
 
 // Configure marked with syntax highlighting
 marked.use(
@@ -13,6 +16,16 @@ marked.use(
 	})
 );
 
+interface Frontmatter {
+	title?: string;
+	date?: string | Date;
+	excerpt?: string;
+	tags?: string | string[];
+	aiContributions?: string;
+	blueskyUri?: string;
+	[key: string]: string | string[] | Date | undefined;
+}
+
 export interface BlogPost {
 	slug: string;
 	title: string;
@@ -22,6 +35,7 @@ export interface BlogPost {
 	aiContributions: string;
 	content: string;
 	html: string;
+	readingTime: number;
 	blueskyUri?: string;
 }
 
@@ -57,16 +71,107 @@ export function getPostBySlug(slug: string): BlogPost | null {
 	return parseMarkdown(content, slug);
 }
 
-export function parseMarkdown(content: string, slug: string): BlogPost {
-	// Parse frontmatter - allow \r\n and optional spaces
-	const frontmatterRegex = /^---\s*\r?\n([\s\S]*?)\r?\n---\s*\r?\n?([\s\S]*)$/;
-	const match = content.match(frontmatterRegex);
+function calculateReadingTime(text: string): number {
+	const wordsPerMinute = 200;
+	// Use more robust word count that handles markdown/formatting
+	const words = text.trim().split(/\s+/).length;
+	return Math.ceil(words / wordsPerMinute);
+}
 
-	if (!match) {
-		console.error(
-			`Invalid markdown format for post: ${slug}. Content might be missing frontmatter or have invalid separators.`
-		);
-		// Fallback for malformed posts so we don't crash the whole site
+export function parseMarkdown(content: string, slug: string): BlogPost {
+	try {
+		// Even more robust split: find the first two instances of ---
+		const parts = content.split(/^---/m);
+
+		let data: Frontmatter = {};
+		let markdownContent = content;
+
+		if (parts.length >= 3) {
+			const frontmatter = parts[1].trim();
+			markdownContent = parts.slice(2).join('---').trim();
+
+			try {
+				data = matter(`---\n${frontmatter}\n---`).data as Frontmatter;
+			} catch (e) {
+				console.warn(`gray-matter failed for ${slug}, attempting manual parse`, e);
+				// Manual parse for critical fields
+				const lines = frontmatter.split('\n');
+				let inTags = false;
+				let tagContent = '';
+
+				lines.forEach((line) => {
+					const trimmed = line.trim();
+					if (trimmed.startsWith('tags:')) {
+						const value = trimmed.slice(5).trim();
+						if (value.startsWith('[')) {
+							inTags = true;
+							tagContent = value;
+							if (value.endsWith(']')) inTags = false;
+						} else if (!value) {
+							// tags: followed by bracket on next line
+							inTags = true;
+							tagContent = '';
+						} else {
+							data.tags = value;
+						}
+					} else if (inTags) {
+						tagContent += ' ' + trimmed;
+						if (trimmed.endsWith(']')) inTags = false;
+					} else {
+						const colonIndex = line.indexOf(':');
+						if (colonIndex > 0) {
+							const key = line.slice(0, colonIndex).trim();
+							let value = line.slice(colonIndex + 1).trim();
+							if (value.startsWith("'") || value.startsWith('"')) value = value.slice(1, -1);
+							data[key] = value;
+						}
+					}
+				});
+				if (tagContent) data.tags = tagContent;
+			}
+		}
+
+		const title = data.title || 'Untitled';
+		const dateObj = data.date || new Date().toISOString().split('T')[0];
+		const date = typeof dateObj === 'string' ? dateObj : dateObj.toISOString().split('T')[0];
+		const excerpt = data.excerpt || '';
+		const aiContributions = data.aiContributions || 'none';
+		const blueskyUri = data.blueskyUri;
+
+		// Normalize tags - handle YAML list or comma string
+		let tags: string[] = [];
+		const rawTags = data.tags;
+		if (rawTags) {
+			if (Array.isArray(rawTags)) {
+				tags = rawTags.map((t) => String(t).trim());
+			} else if (typeof rawTags === 'string') {
+				// Handle both [tag1, tag2] and "tag1, tag2"
+				const cleanTags = rawTags.replace(/[[\]"']/g, '');
+				tags = cleanTags
+					.split(',')
+					.map((t) => t.trim())
+					.filter((t) => t.length > 0);
+			}
+		}
+
+		// Convert markdown to HTML
+		let html = marked(markdownContent) as string;
+		html = html.replace(/<h1[^>]*>.*?<\/h1>/i, '');
+
+		return {
+			slug,
+			title,
+			date,
+			excerpt,
+			tags,
+			aiContributions,
+			content: markdownContent,
+			html,
+			readingTime: calculateReadingTime(markdownContent),
+			blueskyUri
+		};
+	} catch (error) {
+		console.error(`Error parsing markdown for post: ${slug}`, error);
 		return {
 			slug,
 			title: `Error: Malformed Post (${slug})`,
@@ -76,74 +181,10 @@ export function parseMarkdown(content: string, slug: string): BlogPost {
 			aiContributions: 'none',
 			content: content,
 			html: `<p>Error parsing post content for ${slug}. Please check the file format.</p>`,
+			readingTime: 0,
 			blueskyUri: undefined
 		};
 	}
-
-	const frontmatter = match[1];
-	const markdownContent = match[2];
-
-	// Parse frontmatter fields
-	const titleMatch =
-		frontmatter.match(/^title:\s*["'](.+?)["']/m) || frontmatter.match(/^title:\s*(.+)$/m);
-	const dateMatch =
-		frontmatter.match(/^date:\s*["'](.+?)["']/m) || frontmatter.match(/^date:\s*(.+)$/m);
-	const excerptMatch =
-		frontmatter.match(/^excerpt:\s*["'](.+?)["']/m) || frontmatter.match(/^excerpt:\s*(.+)$/m);
-	const tagsMatch =
-		frontmatter.match(/^tags:\s*\[([\s\S]+?)\]/m) ||
-		frontmatter.match(/^tags:\s*["']([\s\S]+?)["']/m) ||
-		frontmatter.match(/^tags:\s*(.+)$/m);
-	const aiContributionsMatch =
-		frontmatter.match(/^aiContributions:\s*["'](.+?)["']/m) ||
-		frontmatter.match(/^aiContributions:\s*(.+)$/m);
-	const blueskyUriMatch =
-		frontmatter.match(/^blueskyUri:\s*["'](.+?)["']/m) ||
-		frontmatter.match(/^blueskyUri:\s*(.+)$/m);
-
-	const title = titleMatch ? titleMatch[1].trim() : 'Untitled';
-	const date = dateMatch ? dateMatch[1].trim() : new Date().toISOString().split('T')[0];
-	const excerpt = excerptMatch ? excerptMatch[1].trim() : '';
-	const aiContributions = aiContributionsMatch ? aiContributionsMatch[1].trim() : 'none';
-
-	// Parse tags - support array format [tag1, tag2] or comma-separated string "tag1, tag2"
-	let tags: string[] = [];
-	if (tagsMatch) {
-		const tagsValue = tagsMatch[1].trim();
-		// Check if it's an array format
-		if (tagsValue.startsWith('[') && tagsValue.endsWith(']')) {
-			// Array format: [tag1, tag2] or ["tag1", "tag2"]
-			const arrayContent = tagsValue.slice(1, -1);
-			tags = arrayContent
-				.split(',')
-				.map((tag) => tag.trim().replace(/^["']|["']$/g, ''))
-				.filter((tag) => tag.length > 0);
-		} else {
-			// Comma-separated string format
-			tags = tagsValue
-				.split(',')
-				.map((tag) => tag.trim().replace(/^["']|["']$/g, ''))
-				.filter((tag) => tag.length > 0);
-		}
-	}
-
-	// Convert markdown to HTML
-	let html = marked(markdownContent) as string;
-
-	// Remove the main title (first h1) from HTML since it's already displayed above
-	html = html.replace(/<h1[^>]*>.*?<\/h1>/i, '');
-
-	return {
-		slug,
-		title,
-		date,
-		excerpt,
-		tags,
-		aiContributions,
-		content: markdownContent,
-		html,
-		blueskyUri: blueskyUriMatch ? blueskyUriMatch[1].trim() : undefined
-	};
 }
 
 export function getAllTags(): string[] {

@@ -13,8 +13,13 @@
 
 <!--<div class="relative min-h-screen text-gray-900 transition-colors duration-200 dark:text-gray-100 ">-->
 <div
-	class="relative min-h-screen bg-white/95 text-gray-900 transition-colors duration-200 dark:bg-gray-900/95 dark:text-gray-100"
+	class="relative min-h-screen transition-colors duration-300"
+	style="background-color: transparent; color: var(--text-primary);"
 >
+	<div
+		class="pointer-events-none fixed inset-0 -z-50 h-full w-full"
+		style="background-color: var(--bg-primary); opacity: var(--overlay-opacity);"
+	></div>
 	<AnimatedBackground />
 
 	<!-- Desktop Layout -->

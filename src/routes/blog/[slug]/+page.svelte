@@ -71,7 +71,9 @@
 				<h1 class="mb-4 text-4xl font-bold text-gray-900 md:text-5xl dark:text-gray-100">
 					{post.title}
 				</h1>
-				<p class="mb-4 text-sm text-gray-500 dark:text-gray-400">{post.date}</p>
+				<p class="mb-4 text-sm text-gray-500 dark:text-gray-400">
+					{post.date} • {post.readingTime} min read
+				</p>
 				{#if post.tags.length > 0}
 					<div class="flex flex-wrap gap-2">
 						{#each post.tags as tag (tag)}

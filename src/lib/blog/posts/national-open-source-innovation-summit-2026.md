@@ -1,6 +1,6 @@
 ---
 title: 'Building Roads & Bridges: Open Source, AI, and Europe’s Innovation Future'
-date: '2026-01-18'
+date: '2026-02-06'
 excerpt: 'Reflections from the National Open Source Innovation Summit 2026 on how open source, AI, regulation, and trust frameworks are shaping Europe’s digital future.'
 tags:
   [

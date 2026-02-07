@@ -1,9 +1,6 @@
 import { marked } from 'marked';
 import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
-import * as grayMatter from 'gray-matter';
-
-const matter = grayMatter.default || grayMatter;
 
 // Configure marked with syntax highlighting
 marked.use(
@@ -71,52 +68,113 @@ export function getPostBySlug(slug: string): RecipePost | null {
 	return parseMarkdown(content, slug);
 }
 
+/**
+ * Robust browser-safe frontmatter parser.
+ * Handles simple key: value pairs and multiline lists.
+ */
+function parseFrontmatter(frontmatter: string): Frontmatter {
+	const data: Frontmatter = {};
+	const lines = frontmatter.split('\n');
+
+	let currentKey: string | null = null;
+	let currentList: string[] = [];
+	let inList = false;
+
+	lines.forEach((line) => {
+		const trimmed = line.trim();
+		if (!trimmed) return;
+
+		// Check for key: value or key: start of list
+		const colonIndex = line.indexOf(':');
+
+		if (colonIndex > 0 && !line.startsWith('-')) {
+			// If we were in a list, save it
+			if (inList && currentKey) {
+				data[currentKey] = currentList;
+			}
+
+			const key = line.slice(0, colonIndex).trim();
+			let value = line.slice(colonIndex + 1).trim();
+
+			// Handle bracketed lists [tag1, tag2]
+			if (value.startsWith('[') && value.endsWith(']')) {
+				data[key] = value
+					.slice(1, -1)
+					.split(',')
+					.map((s) => s.trim().replace(/^['"]|['"]$/g, ''));
+				inList = false;
+				currentKey = null;
+			} else if (value.startsWith('[') || !value) {
+				// Start of a multiline list
+				inList = true;
+				currentKey = key;
+				currentList = [];
+				if (value.startsWith('[')) {
+					const rest = value.slice(1).trim();
+					if (rest) currentList.push(rest.replace(/,$/, '').replace(/^['"]|['"]$/g, ''));
+				}
+			} else {
+				// Simple value
+				if (value.startsWith("'") || value.startsWith('"')) value = value.slice(1, -1);
+				data[key] = value;
+				inList = false;
+				currentKey = null;
+			}
+		} else if (inList && currentKey) {
+			switch (true) {
+				case trimmed.startsWith('-'):
+					currentList.push(
+						trimmed
+							.slice(1)
+							.trim()
+							.replace(/^['"]|['"]$/g, '')
+					);
+					break;
+				case trimmed === '[' || trimmed === '],':
+					// Skip
+					break;
+				case trimmed === ']' || (trimmed.startsWith(']') && trimmed.length === 1):
+					data[currentKey] = currentList.filter((item) => item !== '[' && item !== ']');
+					inList = false;
+					currentKey = null;
+					break;
+				default: {
+					const cleaned = trimmed
+						.replace(/,$/, '')
+						.replace(/^['"]|['"]$/g, '')
+						.trim();
+					if (cleaned && cleaned !== '[' && cleaned !== ']') {
+						currentList.push(cleaned);
+					}
+					if (trimmed.endsWith(']')) {
+						data[currentKey] = currentList;
+						inList = false;
+						currentKey = null;
+					}
+					break;
+				}
+			}
+		}
+	});
+
+	if (inList && currentKey) {
+		data[currentKey] = currentList;
+	}
+
+	return data;
+}
+
 export function parseMarkdown(content: string, slug: string): RecipePost {
 	try {
 		const parts = content.split(/^---/m);
-		if (parts.length < 3) throw new Error(`Invalid markdown format for post: ${slug}`);
-
-		const frontmatter = parts[1].trim();
-		const markdownContent = parts.slice(2).join('---').trim();
 
 		let data: Frontmatter = {};
-		try {
-			data = matter(`---\n${frontmatter}\n---`).data as Frontmatter;
-		} catch (e) {
-			console.warn(`gray-matter failed for recipe ${slug}, attempting manual parse`, e);
-			const lines = frontmatter.split('\n');
-			let inTags = false;
-			let tagContent = '';
+		let markdownContent = content;
 
-			lines.forEach((line) => {
-				const trimmed = line.trim();
-				if (trimmed.startsWith('tags:')) {
-					const value = trimmed.slice(5).trim();
-					if (value.startsWith('[')) {
-						inTags = true;
-						tagContent = value;
-						if (value.endsWith(']')) inTags = false;
-					} else if (!value) {
-						// tags: followed by bracket on next line
-						inTags = true;
-						tagContent = '';
-					} else {
-						data.tags = value;
-					}
-				} else if (inTags) {
-					tagContent += ' ' + trimmed;
-					if (trimmed.endsWith(']')) inTags = false;
-				} else {
-					const colonIndex = line.indexOf(':');
-					if (colonIndex > 0) {
-						const key = line.slice(0, colonIndex).trim();
-						let value = line.slice(colonIndex + 1).trim();
-						if (value.startsWith("'") || value.startsWith('"')) value = value.slice(1, -1);
-						data[key] = value;
-					}
-				}
-			});
-			if (tagContent) data.tags = tagContent;
+		if (parts.length >= 3) {
+			const frontmatterSection = parts[1].trim();
+			markdownContent = parts.slice(2).join('---').trim();
+			data = parseFrontmatter(frontmatterSection);
 		}
 
 		const title = data.title || 'Untitled';
@@ -139,7 +197,7 @@ export function parseMarkdown(content: string, slug: string): RecipePost {
 		}
 
 		const ingredients = data.ingredients ? parseIngredients(data.ingredients) : [];
-		const servings = data.servings;
+		const servings = data.servings ? Number(data.servings) : undefined;
 		const blueskyUri = data.blueskyUri;
 
 		let html = marked(markdownContent) as string;

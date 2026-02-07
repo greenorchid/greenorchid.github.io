@@ -1,9 +1,6 @@
 import { marked } from 'marked';
 import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
-import * as grayMatter from 'gray-matter';
-
-const matter = grayMatter.default || grayMatter;
 
 // Configure marked with syntax highlighting
 marked.use(
@@ -78,57 +75,109 @@ function calculateReadingTime(text: string): number {
 	return Math.ceil(words / wordsPerMinute);
 }
 
+/**
+ * Robust browser-safe frontmatter parser.
+ * Handles simple key: value pairs and basic lists.
+ */
+function parseFrontmatter(frontmatter: string): Frontmatter {
+	const data: Frontmatter = {};
+	const lines = frontmatter.split('\n');
+
+	let currentKey: string | null = null;
+	let currentList: string[] = [];
+	let inList = false;
+
+	lines.forEach((line) => {
+		const trimmed = line.trim();
+		if (!trimmed) return;
+
+		// Check for key: value or key: start of list
+		const colonIndex = line.indexOf(':');
+
+		if (colonIndex > 0 && !line.startsWith('-')) {
+			const key = line.slice(0, colonIndex).trim();
+			let value = line.slice(colonIndex + 1).trim();
+
+			// Handle bracketed lists [tag1, tag2]
+			if (value.startsWith('[') && value.endsWith(']')) {
+				data[key] = value
+					.slice(1, -1)
+					.split(',')
+					.map((s) => s.trim().replace(/^['"]|['"]$/g, ''));
+				inList = false;
+				currentKey = null;
+			} else if (value.startsWith('[') || !value) {
+				// Start of a multiline list
+				inList = true;
+				currentKey = key;
+				currentList = [];
+				if (value.startsWith('[')) {
+					const listContent = value.slice(1);
+					if (listContent) currentList.push(listContent);
+				}
+			} else {
+				// Simple value
+				if (value.startsWith("'") || value.startsWith('"')) value = value.slice(1, -1);
+				data[key] = value;
+				inList = false;
+				currentKey = null;
+			}
+		} else if (inList && currentKey) {
+			switch (true) {
+				case trimmed.startsWith('-'):
+					currentList.push(
+						trimmed
+							.slice(1)
+							.trim()
+							.replace(/^['"]|['"]$/g, '')
+					);
+					break;
+				case trimmed === '[' || trimmed === '],':
+					// Skip
+					break;
+				case trimmed === ']' || (trimmed.startsWith(']') && trimmed.length === 1):
+					data[currentKey] = currentList.filter((item) => item !== '[' && item !== ']');
+					inList = false;
+					currentKey = null;
+					break;
+				default: {
+					const cleaned = trimmed
+						.replace(/,$/, '')
+						.replace(/^['"]|['"]$/g, '')
+						.trim();
+					if (cleaned && cleaned !== '[' && cleaned !== ']') {
+						currentList.push(cleaned);
+					}
+					if (trimmed.endsWith(']')) {
+						data[currentKey] = currentList;
+						inList = false;
+						currentKey = null;
+					}
+					break;
+				}
+			}
+		}
+	});
+
+	// Cleanup any remaining list
+	if (inList && currentKey && currentList) {
+		data[currentKey] = currentList;
+	}
+
+	return data;
+}
+
 export function parseMarkdown(content: string, slug: string): BlogPost {
 	try {
-		// Even more robust split: find the first two instances of ---
 		const parts = content.split(/^---/m);
 
 		let data: Frontmatter = {};
 		let markdownContent = content;
 
 		if (parts.length >= 3) {
-			const frontmatter = parts[1].trim();
+			const frontmatterSection = parts[1].trim();
 			markdownContent = parts.slice(2).join('---').trim();
-
-			try {
-				data = matter(`---\n${frontmatter}\n---`).data as Frontmatter;
-			} catch (e) {
-				console.warn(`gray-matter failed for ${slug}, attempting manual parse`, e);
-				// Manual parse for critical fields
-				const lines = frontmatter.split('\n');
-				let inTags = false;
-				let tagContent = '';
-
-				lines.forEach((line) => {
-					const trimmed = line.trim();
-					if (trimmed.startsWith('tags:')) {
-						const value = trimmed.slice(5).trim();
-						if (value.startsWith('[')) {
-							inTags = true;
-							tagContent = value;
-							if (value.endsWith(']')) inTags = false;
-						} else if (!value) {
-							// tags: followed by bracket on next line
-							inTags = true;
-							tagContent = '';
-						} else {
-							data.tags = value;
-						}
-					} else if (inTags) {
-						tagContent += ' ' + trimmed;
-						if (trimmed.endsWith(']')) inTags = false;
-					} else {
-						const colonIndex = line.indexOf(':');
-						if (colonIndex > 0) {
-							const key = line.slice(0, colonIndex).trim();
-							let value = line.slice(colonIndex + 1).trim();
-							if (value.startsWith("'") || value.startsWith('"')) value = value.slice(1, -1);
-							data[key] = value;
-						}
-					}
-				});
-				if (tagContent) data.tags = tagContent;
-			}
+			data = parseFrontmatter(frontmatterSection);
 		}
 
 		const title = data.title || 'Untitled';
@@ -138,14 +187,13 @@ export function parseMarkdown(content: string, slug: string): BlogPost {
 		const aiContributions = data.aiContributions || 'none';
 		const blueskyUri = data.blueskyUri;
 
-		// Normalize tags - handle YAML list or comma string
+		// Normalize tags
 		let tags: string[] = [];
 		const rawTags = data.tags;
 		if (rawTags) {
 			if (Array.isArray(rawTags)) {
 				tags = rawTags.map((t) => String(t).trim());
 			} else if (typeof rawTags === 'string') {
-				// Handle both [tag1, tag2] and "tag1, tag2"
 				const cleanTags = rawTags.replace(/[[\]"']/g, '');
 				tags = cleanTags
 					.split(',')

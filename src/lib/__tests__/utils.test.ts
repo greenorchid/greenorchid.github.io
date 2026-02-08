@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { isActive } from './utils';
+import { isActive } from '../utils';
 
 describe('isActive', () => {
 	it('returns true for exact match', () => {

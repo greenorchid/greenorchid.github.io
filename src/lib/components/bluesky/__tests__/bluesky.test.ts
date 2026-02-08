@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { blueskyStore } from './stores.svelte';
-import { post, like, follow } from './actions';
+import { blueskyStore } from '../stores.svelte';
+import { post, like, follow } from '../actions';
 
 // Mock SvelteKit dynamic environment
 vi.mock('$env/dynamic/public', () => ({

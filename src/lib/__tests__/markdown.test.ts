@@ -40,6 +40,12 @@ describe('markdown utility', () => {
 			expect(result.categories).toEqual(['Category 1', 'Category 2']);
 		});
 
+		it('should parse bulleted lists where items contain colons', () => {
+			const frontmatter = `ingredients:\n  - Eggs: 2\n  - Milk: 250 ml`;
+			const result = parseFrontmatter(frontmatter);
+			expect(result.ingredients).toEqual(['Eggs: 2', 'Milk: 250 ml']);
+		});
+
 		it('should handle empty or malformed input gracefully', () => {
 			expect(parseFrontmatter('')).toEqual({});
 			// @ts-expect-error testing invalid input

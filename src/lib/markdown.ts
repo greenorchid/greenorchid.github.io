@@ -32,7 +32,7 @@ export function parseFrontmatter(frontmatter: string): Record<string, unknown> {
 		// Check for key: value or key: start of list
 		const colonIndex = line.indexOf(':');
 
-		if (colonIndex > 0 && !line.startsWith('-')) {
+		if (colonIndex > 0 && !trimmed.startsWith('-')) {
 			// Save previous list if any
 			if (inList && currentKey) {
 				data[currentKey] = currentList;

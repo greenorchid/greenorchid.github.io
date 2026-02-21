@@ -66,6 +66,10 @@ class ThemeStore {
 		this.apply();
 	}
 
+	get availableStyles() {
+		return getAvailableStyles(this.#testAll);
+	}
+
 	// Legacy compatibility getter
 	get current() {
 		// Mapping for components that haven't been updated yet

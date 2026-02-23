@@ -456,18 +456,13 @@ A decoupled attestation service provides defensible compliance verification whil
 
 ## References
 
-1. Operational Policies
-2. Sigstore / Cosign documentation
-3. Verifying in-toto attestations
-4. Governance Process
-5. SLSA GitHub generator
-6. Use case for predicates
-7. CycloneDX specification
-8. SPDX specification
-9. Scanner REST APIs
-10. Static Analysis Tool plugin
-11. Static Analysis Tool REST API
-12. Container Scanner API guide
-13. Branch protection and Checks API
-14. OIDC keyless signing guidance</content>
-    <parameter name="filePath">/home/marc/Documents/greenorchid/behan.dev-svelte/article.md
+1. [SLSA Framework](https://slsa.dev/)
+2. [Sigstore / Cosign Documentation](https://docs.sigstore.dev/cosign/overview/)
+3. [Verifying in-toto Attestations](https://github.com/in-toto/totoit)
+4. [SLSA GitHub Generator](https://github.com/slsa-framework/slsa-github-generator)
+5. [In-toto Attestation Framework](https://in-toto.io/)
+6. [CycloneDX Specification](https://cyclonedx.org/specification/overview/)
+7. [SPDX Specification](https://spdx.dev/specifications/)
+8. [GitHub Checks API](https://docs.github.com/en/rest/checks)
+9. [Sigstore OIDC Keyless Signing](https://docs.sigstore.dev/cosign/signing_with_oidc/)
+10. [SLSA v1.0 Provenance Specification](https://slsa.dev/spec/v1.0/provenance)

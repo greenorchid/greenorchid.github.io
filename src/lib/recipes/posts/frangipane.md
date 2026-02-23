@@ -11,6 +11,7 @@ ingredients:
   - Ground almonds: 150 g
   - Almond extract: 2 tsp
   - Flaked almonds: 100 g
+blueskyUri: 'at://did:plc:oo4sqwem2prw2yebqexllrx3/app.bsky.feed.post/3mfkfnyvgiz2m'
 ---
 
 # Classic Frangipane

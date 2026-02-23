@@ -8,7 +8,11 @@
 	const allTags = getAllTags();
 	let selectedTag = $state<string | null>(null);
 	let filteredPosts = $derived(
-		selectedTag ? posts.filter((post) => post.tags.includes(selectedTag as string)) : posts
+		selectedTag
+			? posts.filter((post) =>
+					post.tags.some((t) => t.toLowerCase() === selectedTag?.toLowerCase())
+				)
+			: posts
 	);
 </script>
 

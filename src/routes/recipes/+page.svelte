@@ -8,7 +8,11 @@
 	const allTags = getAllTags();
 	let selectedTag = $state<string | null>(null);
 	let filteredRecipes = $derived(
-		selectedTag ? recipes.filter((recipe) => recipe.tags.includes(selectedTag as string)) : recipes
+		selectedTag
+			? recipes.filter((recipe) =>
+					recipe.tags.some((t) => t.toLowerCase() === selectedTag?.toLowerCase())
+				)
+			: recipes
 	);
 </script>
 

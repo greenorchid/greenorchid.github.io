@@ -115,13 +115,23 @@ export function parseMarkdownFile(content: string, slug: string): BlogPost {
 
 export function getAllTags(): string[] {
 	const posts = getAllPosts();
-	const tagSet = new Set<string>();
+	const tagMap = new Map<string, string>(); // lowercase -> original case
+
 	posts.forEach((post) => {
-		post.tags.forEach((tag) => tagSet.add(tag));
+		post.tags.forEach((tag) => {
+			const lowerTag = tag.toLowerCase();
+			if (!tagMap.has(lowerTag)) {
+				tagMap.set(lowerTag, tag);
+			}
+		});
 	});
-	return Array.from(tagSet).sort();
+
+	return Array.from(tagMap.values()).sort((a, b) =>
+		a.localeCompare(b, undefined, { sensitivity: 'base' })
+	);
 }
 
 export function getPostsByTag(tag: string): BlogPost[] {
-	return getAllPosts().filter((post) => post.tags.includes(tag));
+	const lowerTag = tag.toLowerCase();
+	return getAllPosts().filter((post) => post.tags.some((t) => t.toLowerCase() === lowerTag));
 }

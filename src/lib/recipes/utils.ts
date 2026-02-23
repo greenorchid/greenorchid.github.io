@@ -122,13 +122,25 @@ function parseIngredients(ingredientsData: string[] | Ingredient[]): Ingredient[
 
 export function getAllTags(): string[] {
 	const posts = getAllRecipes();
-	const tagSet = new Set<string>();
-	posts.forEach((p) => p.tags.forEach((t) => tagSet.add(t)));
-	return Array.from(tagSet).sort();
+	const tagMap = new Map<string, string>(); // lowercase -> original case
+
+	posts.forEach((p) => {
+		p.tags.forEach((t) => {
+			const lowerTag = t.toLowerCase();
+			if (!tagMap.has(lowerTag)) {
+				tagMap.set(lowerTag, t);
+			}
+		});
+	});
+
+	return Array.from(tagMap.values()).sort((a, b) =>
+		a.localeCompare(b, undefined, { sensitivity: 'base' })
+	);
 }
 
 export function getPostsByTag(tag: string): RecipePost[] {
-	return getAllRecipes().filter((p) => p.tags.includes(tag));
+	const lowerTag = tag.toLowerCase();
+	return getAllRecipes().filter((p) => p.tags.some((t) => t.toLowerCase() === lowerTag));
 }
 
 export function scaleIngredients(ingredients: Ingredient[], multiplier: number): Ingredient[] {

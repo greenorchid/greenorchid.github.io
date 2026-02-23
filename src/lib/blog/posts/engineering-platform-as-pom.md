@@ -4,6 +4,7 @@ date: '2026-02-23'
 excerpt: 'Transforming from DevOps to Platform Engineering, and from SAFe to POM'
 tags: ['DevOps', 'Platform Engineering', 'Organisation Structure', 'Engineering Guilds', 'POM']
 aiContributions: 'none'
+blueskyUri: 'at://did:plc:oo4sqwem2prw2yebqexllrx3/app.bsky.feed.post/3mfkfnyl2eq2f'
 ---
 
 # Migrating a Platform Engineering team to a Product Orientated Model

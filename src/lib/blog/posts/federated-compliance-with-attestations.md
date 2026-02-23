@@ -4,6 +4,7 @@ date: '2025-12-15'
 excerpt: 'Ensuring application provenance and attestation in a platform with implicit Distributed Trust.'
 tags: ['Attestations', 'SLSA', 'Secure Software Supply Chain', 'Platform Engineering']
 aiContributions: 'considerable'
+blueskyUri: 'at://did:plc:oo4sqwem2prw2yebqexllrx3/app.bsky.feed.post/3mfkfnysrz62s'
 ---
 
 # Federated CI/CD Compliance: Attestation and Verification Approach

@@ -113,4 +113,11 @@ We've moved away from being a "Service Desk" that fulfills tickets, to being a "
 
 We've just started our journey to POM We're learning, and we're growing, and we're getting better. I'll push an article up in six months time to share our experiences, and to show how we've done!
 
+## References
+
+1. [Platform engineering product teams](https://www.thoughtworks.com/radar/techniques/platform-engineering-product-teams)
+2. [Platform Takes The Pain](https://corecursive.com/platform-takes-the-pain/)
+3. [What does a platform product manager do?](https://platformengineering.org/blog/what-does-a-platform-product-manager-do)
+4. [Platform engineering](https://cloud.google.com/solutions/platform-engineering)
+
 ---

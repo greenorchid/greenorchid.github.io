@@ -79,7 +79,11 @@
 			</header>
 
 			{#if recipe.ingredients && recipe.ingredients.length > 0}
-				<IngredientsList ingredients={recipe.ingredients} servings={recipe.servings} />
+				<IngredientsList
+					ingredients={recipe.ingredients}
+					ingredientGroups={recipe.ingredientGroups}
+					servings={recipe.servings}
+				/>
 			{/if}
 
 			<div

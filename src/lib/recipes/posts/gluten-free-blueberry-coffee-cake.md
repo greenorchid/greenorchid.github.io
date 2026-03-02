@@ -26,6 +26,7 @@ ingredients:
     - Buttermilk: 250 g
   blueberry_layer:
     - Fresh blueberries: 300 g
+blueskyUri: 'at://did:plc:oo4sqwem2prw2yebqexllrx3/app.bsky.feed.post/3mg44nvdjtf2f'
 ---
 
 # Gluten-Free Blueberry Coffee Cake

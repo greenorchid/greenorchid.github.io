@@ -13,11 +13,26 @@ const recipeSchema = {
 		tags: { type: 'array', items: { type: 'string' } },
 		ingredients: {
 			oneOf: [
+				// Grouped ingredients: object whose values are lists of ingredients
 				{
 					type: 'object',
-					patternProperties: { '.*': { type: 'string' } },
+					patternProperties: {
+						'.*': {
+							type: 'array',
+							items: {
+								oneOf: [
+									{ type: 'string' },
+									{
+										type: 'object',
+										additionalProperties: { type: ['string', 'number'] }
+									}
+								]
+							}
+						}
+					},
 					additionalProperties: false
 				},
+				// Flat list of ingredients (backwards compatible)
 				{
 					type: 'array',
 					items: {

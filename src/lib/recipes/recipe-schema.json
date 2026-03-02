@@ -27,7 +27,16 @@
 					"type": "object",
 					"patternProperties": {
 						".*": {
-							"type": "string"
+							"type": "array",
+							"items": {
+								"oneOf": [
+									{ "type": "string" },
+									{
+										"type": "object",
+										"additionalProperties": { "type": ["string", "number"] }
+									}
+								]
+							}
 						}
 					},
 					"additionalProperties": false
@@ -36,20 +45,16 @@
 					"type": "array",
 					"items": {
 						"oneOf": [
-							{
-								"type": "string"
-							},
+							{ "type": "string" },
 							{
 								"type": "object",
-								"additionalProperties": {
-									"type": ["string", "number"]
-								}
+								"additionalProperties": { "type": ["string", "number"] }
 							}
 						]
 					}
 				}
 			],
-			"description": "Ingredients as object or array"
+			"description": "Ingredients as grouped object or flat array"
 		},
 		"blueskyUri": {
 			"type": "string",

@@ -3,9 +3,13 @@ title: 'Recipe Name'
 date: '2026-01-18'
 excerpt: 'A delicious recipe description.'
 tags: ['recipe', 'cuisine', 'main-course']
+servings: 2
 ingredients:
   - Ingredient 1: 2 cups
   - Ingredient 2: 1 tbsp # optional
+  group 1:
+    - Ingredient for group 1: 100g
+    - Other Ingredient for group 1: 150ml
 ---
 
 # Recipe Name
@@ -13,11 +17,6 @@ ingredients:
 ![Recipe Image](/path/to/recipe-image.jpg)
 
 A brief introduction to the recipe, its origins, or why it's special.
-
-## Ingredients
-
-- **Ingredient 1**: 2 cups
-- **Ingredient 2**: 1 tbsp (optional)
 
 ## Instructions
 

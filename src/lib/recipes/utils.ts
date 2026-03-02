@@ -7,15 +7,29 @@ export interface Ingredient {
 	notes?: string;
 }
 
+export interface IngredientGroup {
+	name: string;
+	ingredients: Ingredient[];
+}
+
+type IngredientList = string[] | Ingredient[];
+
+type IngredientGroups = Record<string, IngredientList>;
+
 interface Frontmatter {
 	title?: string;
 	date?: string | Date;
 	excerpt?: string;
 	tags?: string | string[];
-	ingredients?: string[] | Ingredient[];
+	/**
+	 * Ingredients can be provided as:
+	 * - a flat list (string[] or Ingredient[])
+	 * - grouped lists: an object whose values are lists of ingredients
+	 */
+	ingredients?: IngredientList | IngredientGroups;
 	servings?: number;
 	blueskyUri?: string;
-	[key: string]: string | string[] | Ingredient[] | number | Date | undefined;
+	[key: string]: string | string[] | Ingredient[] | IngredientGroups | number | Date | undefined;
 }
 
 export interface RecipePost {
@@ -26,7 +40,16 @@ export interface RecipePost {
 	tags: string[];
 	content: string;
 	html: string;
+	/**
+	 * Normalized flat list of ingredients, regardless of how they
+	 * are grouped in the frontmatter.
+	 */
 	ingredients?: Ingredient[];
+	/**
+	 * Optional grouped view of ingredients, preserving frontmatter sections
+	 * like crumb_topping, batter, etc.
+	 */
+	ingredientGroups?: IngredientGroup[];
 	servings?: number;
 	blueskyUri?: string;
 }
@@ -78,7 +101,40 @@ export function parseMarkdownFile(content: string, slug: string): RecipePost {
 			}
 		}
 
-		const ingredients = data.ingredients ? parseIngredients(data.ingredients) : [];
+		// Prefer explicit ingredients field; fall back to grouped keys produced by parseFrontmatter.
+		// Note: parseFrontmatter will set ingredients: [] when using grouped keys like crumb_topping/batter,
+		// so we also treat an empty array as "no explicit ingredients".
+		let ingredientsSource: IngredientsInput | undefined = data.ingredients;
+		const groupEntries: { name: string; lines: string[] }[] = [];
+
+		for (const [key, value] of Object.entries(data)) {
+			if (
+				['title', 'date', 'excerpt', 'tags', 'servings', 'blueskyUri', 'ingredients'].includes(key)
+			) {
+				continue;
+			}
+			if (Array.isArray(value) && value.every((v) => typeof v === 'string')) {
+				groupEntries.push({ name: key, lines: value as string[] });
+			}
+		}
+
+		if (
+			!ingredientsSource ||
+			(Array.isArray(ingredientsSource) && ingredientsSource.length === 0)
+		) {
+			if (groupEntries.length > 0) {
+				ingredientsSource = groupEntries.flatMap((g) => g.lines);
+			}
+		}
+
+		const ingredients = ingredientsSource ? parseIngredients(ingredientsSource) : [];
+		const ingredientGroups: IngredientGroup[] | undefined =
+			groupEntries.length > 0
+				? groupEntries.map((g) => ({
+						name: g.name.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+						ingredients: parseIngredients(g.lines)
+					}))
+				: undefined;
 		const servings = data.servings ? Number(data.servings) : undefined;
 		const blueskyUri = data.blueskyUri;
 
@@ -89,6 +145,7 @@ export function parseMarkdownFile(content: string, slug: string): RecipePost {
 			excerpt,
 			tags,
 			ingredients,
+			ingredientGroups,
 			servings,
 			blueskyUri,
 			content: markdownContent,
@@ -100,23 +157,39 @@ export function parseMarkdownFile(content: string, slug: string): RecipePost {
 	}
 }
 
-function parseIngredients(ingredientsData: string[] | Ingredient[]): Ingredient[] {
+type IngredientsInput = IngredientList | IngredientGroups;
+
+export function parseIngredients(ingredientsData: IngredientsInput): Ingredient[] {
+	// Flat list of ingredients (existing behaviour)
 	if (Array.isArray(ingredientsData)) {
 		return ingredientsData.map((item) => {
 			if (typeof item === 'string') {
 				const match = item.match(/(.+?):\s*(\d+(?:\.\d+)?)\s*([a-zA-Z%]+)?\s*(?:#\s*(.+?))?\s*$/);
-				if (match)
+				if (match) {
 					return {
 						name: match[1].trim(),
 						amount: parseFloat(match[2]),
 						unit: match[3],
 						notes: match[4]
 					};
+				}
 				return { name: item, amount: 0 };
 			}
 			return item as Ingredient;
 		});
 	}
+
+	// Grouped ingredients: flatten each group's list and reuse the flat parser
+	if (ingredientsData && typeof ingredientsData === 'object') {
+		const allItems: (string | Ingredient)[] = [];
+		for (const value of Object.values(ingredientsData)) {
+			if (Array.isArray(value)) {
+				allItems.push(...value);
+			}
+		}
+		return parseIngredients(allItems as IngredientList);
+	}
+
 	return [];
 }
 

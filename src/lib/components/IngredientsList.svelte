@@ -1,14 +1,33 @@
 <script lang="ts">
-	import { scaleIngredients } from '$lib/recipes/utils';
+	import { scaleIngredients, type IngredientGroup } from '$lib/recipes/utils';
 
-	let { ingredients, multiplier = 1, servings } = $props();
+	let {
+		ingredients,
+		ingredientGroups = [] as IngredientGroup[] | undefined,
+		multiplier = 1,
+		servings
+	} = $props();
 
 	let localMultiplier = $state.raw(1);
 	$effect(() => {
 		localMultiplier = multiplier;
 	});
 	const scaledServings = $derived(servings ? Math.round(servings * localMultiplier) : undefined);
-	const scaledIngredients = $derived(scaleIngredients(ingredients || [], localMultiplier));
+
+	const hasGroups = $derived(!!ingredientGroups && ingredientGroups.length > 0);
+
+	const scaledGroupedIngredients = $derived(
+		hasGroups
+			? (ingredientGroups || []).map((group) => ({
+					name: group.name,
+					ingredients: scaleIngredients(group.ingredients || [], localMultiplier)
+				}))
+			: []
+	);
+
+	const scaledIngredients = $derived(
+		!hasGroups ? scaleIngredients(ingredients || [], localMultiplier) : []
+	);
 
 	function resetMultiplier() {
 		localMultiplier = 1;
@@ -66,34 +85,75 @@
 		</div>
 	</div>
 
-	<ul class="space-y-3">
-		{#each scaledIngredients as ingredient (ingredient.name)}
-			<li
-				class="flex items-start justify-between border-b border-gray-100 py-3 last:border-0 dark:border-gray-700"
-			>
-				<div class="flex-1">
-					<span class="font-medium text-gray-900 dark:text-gray-100">{ingredient.name}</span>
-					{#if ingredient.notes}
-						<span class="text-s ml-2 text-gray-500 italic dark:text-gray-400"
-							>({ingredient.notes})</span
-						>
-					{/if}
+	{#if hasGroups}
+		<div class="space-y-6">
+			{#each scaledGroupedIngredients as group (group.name)}
+				<div>
+					<h4 class="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
+						{group.name}
+					</h4>
+					<ul class="space-y-3">
+						{#each group.ingredients as ingredient, index (`${group.name}-${ingredient.name}-${index}`)}
+							<li
+								class="ml-5 flex items-start justify-between border-b border-gray-100 py-3 last:border-0 dark:border-gray-700"
+							>
+								<div class="flex-1">
+									<span class="font-medium text-gray-900 dark:text-gray-100">{ingredient.name}</span
+									>
+									{#if ingredient.notes}
+										<span class="text-s ml-2 text-gray-500 italic dark:text-gray-400"
+											>({ingredient.notes})</span
+										>
+									{/if}
+								</div>
+								<span class="ml-4 font-medium text-gray-900 dark:text-gray-100">
+									{#if ingredient.amount % 1 === 0}
+										{ingredient.amount}
+									{:else}
+										{ingredient.amount.toFixed(2).replace(/\.?0+$/, '')}
+									{/if}
+									{#if ingredient.unit}
+										<span class="font-normal text-gray-600 dark:text-gray-400"
+											>{ingredient.unit}</span
+										>
+									{/if}
+								</span>
+							</li>
+						{/each}
+					</ul>
 				</div>
-				<span class="ml-4 font-medium text-gray-900 dark:text-gray-100">
-					{#if ingredient.amount % 1 === 0}
-						{ingredient.amount}
-					{:else}
-						{ingredient.amount.toFixed(2).replace(/\.?0+$/, '')}
-					{/if}
-					{#if ingredient.unit}
-						<span class="font-normal text-gray-600 dark:text-gray-400">{ingredient.unit}</span>
-					{/if}
-				</span>
-			</li>
-		{/each}
-	</ul>
+			{/each}
+		</div>
+	{:else}
+		<ul class="space-y-3">
+			{#each scaledIngredients as ingredient, index (`${ingredient.name}-${index}`)}
+				<li
+					class="flex items-start justify-between border-b border-gray-100 py-3 last:border-0 dark:border-gray-700"
+				>
+					<div class="flex-1">
+						<span class="font-medium text-gray-900 dark:text-gray-100">{ingredient.name}</span>
+						{#if ingredient.notes}
+							<span class="text-s ml-2 text-gray-500 italic dark:text-gray-400"
+								>({ingredient.notes})</span
+							>
+						{/if}
+					</div>
+					<span class="ml-4 font-medium text-gray-900 dark:text-gray-100">
+						{#if ingredient.amount % 1 === 0}
+							{ingredient.amount}
+						{:else}
+							{ingredient.amount.toFixed(2).replace(/\.?0+$/, '')}
+						{/if}
+						{#if ingredient.unit}
+							<span class="font-normal text-gray-600 dark:text-gray-400">{ingredient.unit}</span>
+						{/if}
+					</span>
+				</li>
+			{/each}
+		</ul>
+	{/if}
 
-	{#if ingredients && ingredients.length === 0}
+	{#if !hasGroups && ingredients && ingredients.length === 0}
 		<div class="py-8 text-center">
 			<p class="text-sm text-gray-500 italic dark:text-gray-400">No ingredients listed</p>
 		</div>

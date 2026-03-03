@@ -2,11 +2,11 @@
 title: 'Gluten-Free Blueberry Coffee Cake'
 date: '2026-03-02'
 excerpt: 'A soft, cinnamon-layered blueberry coffee cake made with Odlums gluten-free self-raising flour and fresh blueberries.'
-tags: ['recipe', 'baking', 'gluten-free', 'cake']
+tags: ['Coffee Cake', 'Baking', 'Gluten Free']
 servings: 12
 ingredients:
   crumb_topping:
-    - Odlums Gluten Free Self-Raising Flour: 60 g
+    - Gluten Free Self-Raising Flour: 60 g # I use Odlums
     - Dark brown sugar: 65 g
     - Fine salt: 1 g
     - Roasted Hazelnuts, chopped: 30 g #can use pecans, but I prefer the flavour of Hazelnuts and they're easier to find in the baking aisle.
@@ -18,11 +18,11 @@ ingredients:
   batter:
     - Butter (softened): 85 g
     - Granulated sugar: 150 g
-    - Vanilla extract: 2 g (½ tsp)
-    - Eggs: 2 large (approx. 100 g without shells)
-    - Odlums Gluten Free Self-Raising Flour: 190 g
-    - Baking soda: 1 g (¼ tsp)
-    - Fine salt: 1.5 g (¼ tsp)
+    - Vanilla extract: 2 g
+    - Eggs (large free range): 2 # approx. 100 g
+    - Gluten Free Self-Raising Flour: 190 g # I use Odlun brand
+    - Baking soda: 1 g
+    - Fine salt: 1.5 g
     - Buttermilk: 250 g
   blueberry_layer:
     - Fresh blueberries: 300 g
@@ -31,10 +31,10 @@ blueskyUri: 'at://did:plc:oo4sqwem2prw2yebqexllrx3/app.bsky.feed.post/3mg44nvdjt
 
 # Gluten-Free Blueberry Coffee Cake
 
-An adapted recipe, tweaked to be gluten free, from a recipe I discovered online. Using buttermil, it results in a tender, cinnamon-swirled coffee cake bursting with fresh blueberries. I preferred the toasted hazelnutz and oats to top within the crumb. This version is optimised specifically for gluten-free structure using Odlums Gluten Free Self-Raising Flour, ensuring a soft crumb and balanced rise.
+An adapted recipe, tweaked to be gluten free, from a recipe I discovered online. Using buttermilk, it results in a tender, cinnamon-swirled coffee cake bursting with fresh blueberries. I preferred the toasted hazelnutz and oats to top within the crumb. This version is optimised specifically for gluten-free structure using Odlums Gluten Free Self-Raising Flour, ensuring a soft crumb and balanced rise.
 
 1. **Preheat oven** to 175°C. Grease and line a 20 cm (8x8") metal tin.
-2. **Prepare crumb topping:** Rub flour, brown sugar, salt, pecans, and cold butter together until large moist crumbs form. Add oats & mix. Chill.
+2. **Prepare crumb topping:** Rub flour, brown sugar, salt, hazelnuts, and cold butter together until large moist crumbs form. Add oats & mix. Chill.
 3. **Mix cinnamon layer:** Combine sugar and cinnamon. Set aside.
 4. **Prepare blueberries:** Wash & Thoroughly dry blueberries
 5. **Cream butter and sugar** for 3–4 minutes until pale and fluffy.

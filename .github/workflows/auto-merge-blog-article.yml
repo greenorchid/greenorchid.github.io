@@ -1,0 +1,37 @@
+# Runs at 9am and 9pm UTC. Creates a PR from chore/new-blog-article to main and merges it.
+# Uses GHA_BLUESKY_PR_PAT_TOKEN to bypass branch protection (same pattern as bluesky-auto-post).
+name: Auto PR and merge (blog article branch)
+
+on:
+  schedule:
+    - cron: '0 9 * * *' # 9am UTC
+    - cron: '0 21 * * *' # 9pm UTC
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-and-merge-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Find or create PR
+        id: pr
+        run: |
+          PR=$(gh pr list --base main --head chore/new-blog-article --state open --json number -q '.[0].number' 2>/dev/null || true)
+          if [ -z "$PR" ]; then
+            gh pr create --base main --head chore/new-blog-article \
+              --title "chore: new blog article" \
+              --body "Auto PR from \`chore/new-blog-article\`. Merged by [auto-merge-blog-article](https://github.com/${{ github.repository }}/actions/workflows/auto-merge-blog-article.yml)."
+            PR=$(gh pr list --base main --head chore/new-blog-article --state open --json number -q '.[0].number')
+          fi
+          echo "number=$PR" >> $GITHUB_OUTPUT
+
+      - name: Merge PR
+        if: steps.pr.outputs.number != ''
+        run: |
+          gh auth login --with-token <<< "${{ secrets.GHA_BLUESKY_PR_PAT_TOKEN }}"
+          gh pr merge ${{ steps.pr.outputs.number }} --merge

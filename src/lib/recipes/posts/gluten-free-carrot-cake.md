@@ -28,6 +28,7 @@ ingredients:
     - Vanilla extract: 1 tsp
     - Salt: 0.25 g #pinch optional
     - Walnuts: 10g #to decorate
+blueskyUri: 'at://did:plc:oo4sqwem2prw2yebqexllrx3/app.bsky.feed.post/3mgiutatgkh2m'
 ---
 
 # Gluten-Free Carrot Cake with Mascarpone Frosting

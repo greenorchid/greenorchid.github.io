@@ -1,5 +1,5 @@
 ---
-title: 'Gluten-Free Carrot Cake with CMascarpone Frosting'
+title: 'Gluten-Free Carrot Cake with Mascarpone Frosting'
 date: '2026-03-07'
 excerpt: 'A tall, bakery-style gluten-free carrot cake packed with walnuts and juicy raisins, finished with a silky mascarpone rosting, thats not overly sweet.'
 tags: ['Gluten Free', 'Baking', 'Carrot Cake']

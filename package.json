@@ -18,7 +18,7 @@
 		"lint:fix": "prettier --write . && eslint . --fix"
 	},
 	"devDependencies": {
-		"@eslint/compat": "^2.0.2",
+		"@eslint/compat": "^2.0.3",
 		"@eslint/js": "^10.0.1",
 		"@playwright/test": "^1.58.2",
 		"@sveltejs/adapter-auto": "^7.0.1",

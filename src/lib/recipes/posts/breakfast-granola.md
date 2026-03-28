@@ -15,6 +15,7 @@ ingredients:
   - Egg White: 1 #need for "clustering" sub. ground flaxseed soaked in water to make it vegan
   - Vanilla extract: 5 # 1tsp approx
   - Raisins: 110g #Only added after cooking
+blueskyUri: 'at://did:plc:oo4sqwem2prw2yebqexllrx3/app.bsky.feed.post/3mi4nppabag24'
 ---
 
 # Breakfast Granola

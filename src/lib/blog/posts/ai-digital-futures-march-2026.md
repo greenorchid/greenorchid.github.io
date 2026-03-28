@@ -4,6 +4,7 @@ date: '2026-03-28'
 excerpt: 'Why skills, mindset, and responsible AI foundations are the real drivers of successful AI adoption.'
 tags: ['AI', 'Digital Transformation', 'Workforce', 'Responsible AI']
 aiContributions: 'none'
+blueskyUri: 'at://did:plc:oo4sqwem2prw2yebqexllrx3/app.bsky.feed.post/3mi4npoqq6624'
 ---
 
 # Digital Futures: Foundations First, Then Scale AI

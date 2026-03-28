@@ -12,7 +12,7 @@ At a recent Digital Futures session at Salesforce Tower, with perspectives from 
 
 AI success is not defined by the technology itself—but by the foundations we build around it.
 
-Despite rapid investment and experimentation, up to 95% of AI pilots still fail to scale (MIT NANDA 2025). The gap is no longer innovation—it’s execution.
+Despite rapid investment and experimentation, up to 95% of AI pilots still fail to scale [MIT NANDA 2025](https://fortune.com/2025/08/18/mit-report-95-percent-generative-ai-pilots-at-companies-failing-cfo/nom). The gap is no longer innovation—it’s execution.
 
 ## Section 1: Skills & Mindset – The Real Transformation
 

@@ -4,6 +4,7 @@ date: '2026-04-05'
 excerpt: 'On the back of Axios, a reflection on the growing risk of compromised npm packages, the illusion of trust in dependencies, and the balance between developer experience and security.'
 tags: ['security', 'npm', 'supply-chain', 'devsecops']
 aiContributions: 'partial'
+blueskyUri: 'at://did:plc:oo4sqwem2prw2yebqexllrx3/app.bsky.feed.post/3mirmibt25d2m'
 ---
 
 # The Hidden Cost of Trust: Axios, npm, and the Modern Supply Chain Problem

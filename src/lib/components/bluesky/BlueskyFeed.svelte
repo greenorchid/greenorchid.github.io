@@ -60,7 +60,7 @@
 		<div class="p-8 text-center text-gray-500">No posts yet!</div>
 	{:else if blueskyStore.timeline.length > 0}
 		<div class="scrollbar-thin max-h-[600px] overflow-x-hidden overflow-y-auto">
-			{#each blueskyStore.timeline as post (post.uri)}
+			{#each blueskyStore.timeline.slice(0, 5) as post (post.uri)}
 				<BlueskyPost {post} />
 			{/each}
 		</div>

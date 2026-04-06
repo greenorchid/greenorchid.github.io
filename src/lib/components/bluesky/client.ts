@@ -31,7 +31,39 @@ export async function getOAuthClient() {
 				clientId: clientMetadata.client_id,
 				// @ts-expect-error - Metadata is fetched from client_id URL in web mode
 				clientMetadata: clientMetadata,
-				allowHttp: true
+				allowHttp: true,
+				fetch: async (input, init) => {
+					const url = input instanceof Request ? input.url : input.toString();
+					const isNgrok = url.includes('ngrok-free.dev');
+					if (isNgrok) {
+						init = init || {};
+						const headers = new Headers(
+							init.headers || (input instanceof Request ? input.headers : {})
+						);
+						headers.set('ngrok-skip-browser-warning', '1');
+
+						// Create a new RequestInit with the modified headers
+						const newInit: RequestInit = {
+							...init,
+							headers
+						};
+
+						// If input was a Request, we need to extract body and method
+						if (input instanceof Request) {
+							newInit.method = newInit.method || input.method;
+							if (!newInit.body && input.method !== 'GET' && input.method !== 'HEAD') {
+								// We have to clone the request to read body, but for metadata GET it's fine
+								// Actually Svelte's fetch doesn't need this for clientMetadata which is a GET
+								// We'll just pass the URL as string to avoid Request body consumption issues
+								const reqClone = input.clone();
+								if (reqClone.body) newInit.body = reqClone.body;
+							}
+							return fetch(url, newInit);
+						}
+						return fetch(input, newInit);
+					}
+					return fetch(input, init);
+				}
 			});
 		} catch (err) {
 			logger.warn('Bluesky client: Failed to load OAuth client (expected in guest mode):', err);

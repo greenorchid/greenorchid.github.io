@@ -10,7 +10,9 @@
 	import { CONFIG } from '$lib/config';
 	import BlueskyComments from '$lib/components/bluesky/BlueskyComments.svelte';
 	import BlueskyButton from '$lib/components/bluesky/BlueskyButton.svelte';
+	import BlueskyAuth from '$lib/components/bluesky/BlueskyAuth.svelte';
 	import { initializeAgent } from '$lib/components/bluesky/client';
+	import { blueskyStore } from '$lib/components/bluesky/stores.svelte';
 
 	let { data } = $props();
 	const recipe = $derived(data.post);
@@ -60,20 +62,23 @@
 						{/if}
 					</div>
 					<div class="flex flex-wrap items-center gap-4">
-						<BlueskyButton
-							href="https://bsky.app/intent/compose?text={encodeURIComponent(
-								`Read "${recipe.title}" by @${CONFIG.blueskyHandle}\n\n${page.url.href}`
-							)}"
-						/>
-
-						{#if recipe.blueskyUri}
+						{#if blueskyStore.isAuthenticated}
 							<BlueskyButton
-								href="https://bsky.app/profile/{recipe.blueskyUri.split(
-									'/'
-								)[2]}/post/{recipe.blueskyUri.split('/').pop()}"
-								text="View on Bluesky"
+								href="https://bsky.app/intent/compose?text={encodeURIComponent(
+									`Read "${recipe.title}" by @${CONFIG.blueskyHandle}\n\n${page.url.href}`
+								)}"
 							/>
+
+							{#if recipe.blueskyUri}
+								<BlueskyButton
+									href="https://bsky.app/profile/{recipe.blueskyUri.split(
+										'/'
+									)[2]}/post/{recipe.blueskyUri.split('/').pop()}"
+									text="View on Bluesky"
+								/>
+							{/if}
 						{/if}
+						<BlueskyAuth />
 					</div>
 				</div>
 			</header>

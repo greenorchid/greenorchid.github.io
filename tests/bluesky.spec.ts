@@ -13,13 +13,13 @@ test.describe('Bluesky Integration', () => {
 		).toBeVisible();
 	});
 
-	test('should show Share on Bluesky button on blog post', async ({ page }) => {
+	test('should show Sign in with Bluesky button on blog post', async ({ page }) => {
 		await page.goto('/blog/ai-model-ingestion');
-		await expect(page.getByRole('link', { name: 'Share on Bluesky' })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Sign in with Bluesky' })).toBeVisible();
 	});
 
-	test('should show Share on Bluesky button on recipe', async ({ page }) => {
+	test('should show Sign in with Bluesky button on recipe', async ({ page }) => {
 		await page.goto('/recipes/naan');
-		await expect(page.getByRole('link', { name: 'Share on Bluesky' })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Sign in with Bluesky' })).toBeVisible();
 	});
 });

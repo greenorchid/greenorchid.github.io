@@ -8,7 +8,9 @@
 	import Tooltip from '$lib/components/Tooltip.svelte';
 	import BlueskyComments from '$lib/components/bluesky/BlueskyComments.svelte';
 	import BlueskyButton from '$lib/components/bluesky/BlueskyButton.svelte';
+	import BlueskyAuth from '$lib/components/bluesky/BlueskyAuth.svelte';
 	import { initializeAgent } from '$lib/components/bluesky/client';
+	import { blueskyStore } from '$lib/components/bluesky/stores.svelte';
 	import { CONFIG } from '$lib/config';
 
 	let { data } = $props();
@@ -101,20 +103,23 @@
 					</Tooltip>
 
 					<div class="flex flex-wrap items-center gap-4">
-						<BlueskyButton
-							href="https://bsky.app/intent/compose?text={encodeURIComponent(
-								`Read "${post.title}" by @${CONFIG.blueskyHandle}\n\n${page.url.href}`
-							)}"
-						/>
-
-						{#if post.blueskyUri}
+						{#if blueskyStore.isAuthenticated}
 							<BlueskyButton
-								href="https://bsky.app/profile/{post.blueskyUri.split('/')[2]}/post/{post.blueskyUri
-									.split('/')
-									.pop()}"
-								text="View on Bluesky"
+								href="https://bsky.app/intent/compose?text={encodeURIComponent(
+									`Read "${post.title}" by @${CONFIG.blueskyHandle}\n\n${page.url.href}`
+								)}"
 							/>
+
+							{#if post.blueskyUri}
+								<BlueskyButton
+									href="https://bsky.app/profile/{post.blueskyUri.split(
+										'/'
+									)[2]}/post/{post.blueskyUri.split('/').pop()}"
+									text="View on Bluesky"
+								/>
+							{/if}
 						{/if}
+						<BlueskyAuth />
 					</div>
 				</div>
 			</header>

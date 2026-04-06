@@ -6,14 +6,23 @@
 
 	const recipes = getAllRecipes();
 	const allTags = getAllTags();
-	let selectedTag = $state<string | null>(null);
+	let selectedTags = $state<string[]>([]);
+	let tagsExpanded = $state(false);
 	let filteredRecipes = $derived(
-		selectedTag
+		selectedTags.length > 0
 			? recipes.filter((recipe) =>
-					recipe.tags.some((t) => t.toLowerCase() === selectedTag?.toLowerCase())
+					selectedTags.every((st) => recipe.tags.some((t) => t.toLowerCase() === st.toLowerCase()))
 				)
 			: recipes
 	);
+
+	function toggleTag(tag: string) {
+		if (selectedTags.includes(tag)) {
+			selectedTags = selectedTags.filter((t) => t !== tag);
+		} else {
+			selectedTags = [...selectedTags, tag];
+		}
+	}
 </script>
 
 <div id="main-content" class="container mx-auto max-w-6xl px-4 py-8">
@@ -24,11 +33,40 @@
 		<div
 			class="mb-6 rounded-lg border border-gray-200 bg-gray-100 p-4 dark:border-gray-700 dark:bg-gray-800"
 		>
-			<div class="flex flex-wrap items-center gap-2">
-				<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Filter by tag:</span>
+			<div class="mb-3 flex items-center justify-between md:mb-0">
+				<span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+					Filter by tag:
+					{#if selectedTags.length > 0}
+						<div class="ml-2 inline-flex flex-wrap gap-1">
+							{#each selectedTags as st (st)}
+								<span
+									class="rounded-full border border-green-200 bg-green-100 px-2 py-0.5 text-xs text-green-700 dark:border-green-800 dark:bg-green-900/30 dark:text-green-400"
+								>
+									{st}
+									<button
+										class="ml-1 hover:text-green-900 dark:hover:text-green-200"
+										onclick={() => toggleTag(st)}
+										aria-label="Remove {st} filter">&times;</button
+									>
+								</span>
+							{/each}
+						</div>
+					{/if}
+				</span>
 				<button
-					onclick={() => (selectedTag = null)}
-					class="rounded-full px-3 py-1 text-sm transition-colors {selectedTag === null
+					class="text-sm text-green-600 hover:underline md:hidden dark:text-green-400"
+					onclick={() => (tagsExpanded = !tagsExpanded)}
+				>
+					{tagsExpanded ? 'Hide' : 'Show'}
+				</button>
+			</div>
+
+			<div
+				class="mt-2 flex flex-wrap items-center gap-2 {tagsExpanded ? 'flex' : 'hidden md:flex'}"
+			>
+				<button
+					onclick={() => (selectedTags = [])}
+					class="rounded-full px-3 py-1 text-sm transition-colors {selectedTags.length === 0
 						? 'bg-green-600 text-white dark:bg-green-500'
 						: 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'}"
 				>
@@ -36,8 +74,8 @@
 				</button>
 				{#each allTags as tag (tag)}
 					<button
-						onclick={() => (selectedTag = selectedTag === tag ? null : tag)}
-						class="rounded-full px-3 py-1 text-sm transition-colors {selectedTag === tag
+						onclick={() => toggleTag(tag)}
+						class="rounded-full px-3 py-1 text-sm transition-colors {selectedTags.includes(tag)
 							? 'bg-green-600 text-white dark:bg-green-500'
 							: 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'}"
 					>
@@ -53,8 +91,8 @@
 			class="rounded-lg border border-gray-200 bg-gray-100 p-6 dark:border-gray-700 dark:bg-gray-800"
 		>
 			<p class="text-gray-700 dark:text-gray-300">
-				{#if selectedTag}
-					No recipe(s) found with tag "{selectedTag}".
+				{#if selectedTags.length > 0}
+					No recipe(s) found matching tags "{selectedTags.join(', ')}".
 				{:else}
 					No recipes yet. Check back soon!
 				{/if}

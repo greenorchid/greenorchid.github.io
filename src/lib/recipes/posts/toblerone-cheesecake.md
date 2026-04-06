@@ -20,6 +20,7 @@ ingredients:
     - Double cream (for gelatin step): 50 ml
   Optional Topping:
     - Small Toblerone pieces: As desired
+blueskyUri: 'at://did:plc:oo4sqwem2prw2yebqexllrx3/app.bsky.feed.post/3mituxqzwbr2u'
 ---
 
 # No-Bake Toblerone Cheesecake

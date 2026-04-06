@@ -75,15 +75,11 @@ const response = await fetch(url);
 const data = await response.json();
 ```
 
-Native features have caught up.
+Native features have caught up. How many developers are stuck with a still-valid use case of using Axios as an imported package, that can't be refactored natively?
 
 ### Outdated Dependencies Are Security Liabilities
 
-This is more than technical debt.
-
-It’s security debt.
-
-If a package no longer provides meaningful value but still exists in your dependency tree:
+This is more than technical debt. It’s security debt- if a package no longer provides meaningful value but still exists in your dependency tree:
 
 - It still requires trust
 - It still executes code
@@ -130,7 +126,7 @@ The solution isn’t eliminating friction—it’s moving it:
 - Fast internal mirrors
 - Invisible but enforced controls
 
-Done right, developers aren’t blocked—they’re protected.
+Done right, developers aren’t blocked—they’re protected. Make it easy to consume trusted packages, shift left in the SDLC, and both sides will be happy.
 
 ## Section 5: SAST and SBOM
 
@@ -146,8 +142,6 @@ And alongside it, a complete SBOM is critical:
 - Know what you ship
 - Track vulnerabilities
 - Respond quickly
-
-You can’t defend what you can’t see.
 
 > **You can’t defend what you can’t see.**
 

@@ -10,12 +10,15 @@
 	import BlueskyButton from '$lib/components/bluesky/BlueskyButton.svelte';
 	import { initializeAgent } from '$lib/components/bluesky/client';
 	import { CONFIG } from '$lib/config';
+	import mermaid from 'mermaid';
 
 	let { data } = $props();
 	const post = $derived(data.post);
 
-	onMount(() => {
+	onMount(async () => {
 		initializeAgent();
+		mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+		await mermaid.run();
 	});
 
 	function getAiBadgeBorder(level: string) {

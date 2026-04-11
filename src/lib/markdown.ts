@@ -1,6 +1,18 @@
-import { marked } from 'marked';
+import { marked, Renderer } from 'marked';
 import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
+
+// Custom renderer: pass mermaid fences through as plain pre.mermaid elements
+const renderer = new Renderer();
+renderer.code = ({ text, lang }) => {
+	if (lang === 'mermaid') {
+		return `<pre class="mermaid">${text}</pre>`;
+	}
+	// Fall through to default rendering (will be handled by markedHighlight)
+	return false as unknown as string;
+};
+
+marked.use({ renderer });
 
 // Configure marked with syntax highlighting
 marked.use(

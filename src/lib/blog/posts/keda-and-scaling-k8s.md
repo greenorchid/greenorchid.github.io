@@ -4,6 +4,7 @@ date: '2026-04-10'
 excerpt: 'How KEDA is transforming how we think about scaling Kubernetes resources.'
 tags: ['k8s', 'KEDA', 'HPA', 'Autoscaling']
 aiContributions: 'none'
+blueskyUri: 'at://did:plc:oo4sqwem2prw2yebqexllrx3/app.bsky.feed.post/3mj7sat3zuc2l'
 ---
 
 -

@@ -1,6 +1,6 @@
 ---
 title: 'Autoscaling k8s using KEDA events'
-date: '2026-04-10'
+date: '2026-04-11'
 excerpt: 'How KEDA is transforming how we think about scaling Kubernetes resources.'
 tags: ['k8s', 'KEDA', 'HPA', 'Autoscaling']
 aiContributions: 'none'
@@ -101,7 +101,6 @@ From a developer perspective, the key realization for me was:
 > HTTP is just another event source.
 
 Once I started thinking of it that way, everything became composable.
-s
 
 ### Developer experience: local environments & scaling from zero
 
@@ -120,7 +119,7 @@ Once you factor in:
 - “elastic” timezones (people travelling with their environments)
 - different weekend patterns globally
 
-…it quickly breaks down. And even worse, everything would start and stop at the same time. Entire stacks coming online together, regardless of whether anyone actually needed them.
+...it quickly breaks down. And even worse, everything would start and stop at the same time. Entire stacks coming online together, regardless of whether anyone actually needed them.
 
 ### Activate native k8s resources
 
@@ -135,6 +134,61 @@ That gives a much more natural workflow:
 - walk away → it eventually scales back down
 
 No schedules. No guessing. No coordination.
+
+### Separating Activation from Scaling for multiple microservices
+
+KEDA does not separate activation and scaling per trigger.
+Consider the architecture below
+
+```mermaid
+graph TD
+    User["User Request (Host: My-Exposed-Service)"] --> Traefik["Traefik Ingress"]
+    Traefik --> Proxy["Interceptor (keda-interceptor-proxy)"]
+    Proxy --> PodFE["Frontend Pod (0 → N)"]
+
+    subgraph "KEDA Control Plane"
+        Scaler["External Scaler"] -- "Scrapes Concurrency (My-Exposed-Service)" --> Admin["Interceptor Admin API"]
+        HTTPObj["HTTPScaledObject\n(frontend-scaling, skip=true)"] --> Scaler
+        Scaler -- "external-push metric" --> SO_FE["ScaledObject\n(frontend-scaledobject)"]
+        Scaler -- "same external-push metric" --> SO_MW["ScaledObject\n(middleware-scaledobject)"]
+        Scaler -- "same external-push metric" --> SO_MW["ScaledObject\n(_...n_microservice-scaledobject)"]
+        SO_FE -- "Triggers HPA" --> PodFE
+        SO_MW -- "Triggers HPA" --> PodMW["Middleware Pod (0 → N)"]
+        SO_MW -- "Triggers HPA" --> PodMW["_...n_ microservice Pod (0 → N)"]
+    end
+```
+
+Each trigger:
+
+- contributes to activation (0 → 1)
+- contributes to scaling (1 → N)
+
+So if you attach the HTTP trigger to multiple custom ScaledObjects (e.g. microservices) it will scale based on HTTP traffic — not just activate. HIn other words, KEDA (currently) doesn't suport "Activation-only triggers". However there is a workaround. One can tune the activation trigger to effectively use asentinel value to neutralize scaling influence (essentially mking it a no-op) and allow another trigger, say cpu or memory, or another event ;-) handle the scaling of this object/microservice. E.g.
+
+```yaml
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: middleware-scaledobject
+spec:
+  scaleTargetRef:
+    name: middleware
+  minReplicaCount: 0
+  maxReplicaCount: 100
+  triggers:
+    # Trigger 1: HTTP → ONLY for activation
+    - type: external-push
+      metadata:
+        httpScaledObject: frontend-scaling #This is the HTTPScaledObject
+        scalerAddress: keda-add-ons-http-external-scaler.keda:9090
+        activationTargetValue: '1' # wake up quickly
+        targetValue: '1000000' # effectively disables scaling influence
+    # Trigger 2: real scaling signal (example CPU via HPA fallback)
+    - type: cpu
+      metadata:
+        type: Utilization
+        value: '70'
+```
 
 ### What KEDA can't fix
 
@@ -160,9 +214,7 @@ This matches how real systems behave:
 
 ## Custom events: scaling on intent
 
-The moment it really clicked for me was realizing: _I don’t have to scale on infrastructure signals at all._
-
-With KEDA, I can scale on:
+The moment it really clicked for me was realizing: \_I don’t have to scale on infrastructure signals at all. sWith KEDA, I can scale on:
 
 - Prometheus queries
 - external APIs
@@ -191,7 +243,6 @@ And now I find myself asking a different question: **“When should this even ex
 I’m planning to expand this further with:
 
 - deeper dive into local dev experience
-- patterns for multi-service activation
-- real examples from the PoC
+- keda supports a whole world of [Authentication Providers](https://keda.sh/docs/2.19/authentication-providers/)
 
 If you’re experimenting with KEDA as well, I’d love to compare notes.

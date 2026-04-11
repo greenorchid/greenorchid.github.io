@@ -149,10 +149,10 @@ graph TD
         HTTPObj["HTTPScaledObject\n(frontend-scaling, skip=true)"] --> Scaler
         Scaler -- "external-push metric" --> SO_FE["ScaledObject\n(frontend-scaledobject)"]
         Scaler -- "same external-push metric" --> SO_MW["ScaledObject\n(middleware-scaledobject)"]
-        Scaler -- "same external-push metric" --> SO_MW["ScaledObject\n(_...n_microservice-scaledobject)"]
+        Scaler -- "same external-push metric to <i>n</i> microservice(s)" --> SO_MSn["ScaledObject\n(<i>n</i> microservice-scaledobject)"]
         SO_FE -- "Triggers HPA" --> PodFE
         SO_MW -- "Triggers HPA" --> PodMW["Middleware Pod (0 → N)"]
-        SO_MW -- "Triggers HPA" --> PodMW["_...n_ microservice Pod (0 → N)"]
+        SO_MSn -- "Triggers HPA" --> PodMSn["<i>n</i> microservice Pod (0 → N)"]
     end
 ```
 

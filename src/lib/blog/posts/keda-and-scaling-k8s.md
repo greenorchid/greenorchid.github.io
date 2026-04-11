@@ -161,7 +161,7 @@ Each trigger:
 - contributes to activation (0 → 1)
 - contributes to scaling (1 → N)
 
-So if you attach the HTTP trigger to multiple custom ScaledObjects (e.g. microservices) it will scale based on HTTP traffic — not just activate. HIn other words, KEDA (currently) doesn't suport "Activation-only triggers". However there is a workaround. One can tune the activation trigger to effectively use asentinel value to neutralize scaling influence (essentially mking it a no-op) and allow another trigger, say cpu or memory, or another event ;-) handle the scaling of this object/microservice. E.g.
+So if you attach the HTTP trigger to multiple custom ScaledObjects (e.g. microservices) it will scale based on HTTP traffic — not just activate. In other words, KEDA (currently) doesn't suport "Activation-only triggers". However there is a workaround. One can tune the activation trigger to effectively use a sentinel value to neutralize scaling influence (essentially mking it a no-op) and allow another trigger, say cpu or memory, or another event ;-), to handle the scaling of this object/microservice. E.g.
 
 ```yaml
 apiVersion: keda.sh/v1alpha1

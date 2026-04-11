@@ -7,8 +7,6 @@ aiContributions: 'none'
 blueskyUri: 'at://did:plc:oo4sqwem2prw2yebqexllrx3/app.bsky.feed.post/3mj7sat3zuc2l'
 ---
 
--
-
 ## KEDA Feels Like Magic—Until You Realize It’s Just Events
 
 If you’ve ever tried to autoscale Kubernetes workloads beyond CPU and memory, you’ve probably run into the same frustration I did. What if I don’t care about CPU at all?

@@ -1,5 +1,4 @@
 <script lang="ts">
-	/* eslint-disable svelte/no-navigation-without-resolve */
 	import { onMount } from 'svelte';
 	import 'highlight.js/styles/github-dark.css';
 	import { goto } from '$app/navigation';
@@ -13,6 +12,7 @@
 	import { CONFIG } from '$lib/config';
 	import mermaid from 'mermaid';
 	import { theme } from '$lib/theme.svelte';
+	import { resolve } from '$app/paths';
 
 	let { data } = $props();
 	const post = $derived(data.post);
@@ -57,7 +57,7 @@
 	<article id="main-content" class="container mx-auto max-w-4xl px-4 py-8">
 		<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
 		<button
-			onclick={() => goto(`${base}/blog`)}
+			onclick={() => goto(resolve('/blog'))}
 			class="mb-6 inline-flex items-center text-sm text-gray-600 transition-colors hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400"
 		>
 			<svg

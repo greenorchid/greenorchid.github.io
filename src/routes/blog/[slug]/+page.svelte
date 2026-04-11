@@ -3,7 +3,6 @@
 	import { onMount } from 'svelte';
 	import 'highlight.js/styles/github-dark.css';
 	import { goto } from '$app/navigation';
-	import { base } from '$app/paths';
 	import { page } from '$app/state';
 	import Tooltip from '$lib/components/Tooltip.svelte';
 	import BlueskyComments from '$lib/components/bluesky/BlueskyComments.svelte';
@@ -11,13 +10,17 @@
 	import { initializeAgent } from '$lib/components/bluesky/client';
 	import { CONFIG } from '$lib/config';
 	import mermaid from 'mermaid';
+	import { theme } from '$lib/theme.svelte';
 
 	let { data } = $props();
 	const post = $derived(data.post);
 
 	onMount(async () => {
 		initializeAgent();
-		mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+		mermaid.initialize({
+			startOnLoad: false,
+			theme: theme.mode === 'light' ? 'neutral' : theme.mode
+		});
 		await mermaid.run();
 	});
 

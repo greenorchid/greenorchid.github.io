@@ -2,11 +2,33 @@ import { marked } from 'marked';
 import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
 
-// Configure marked with syntax highlighting
 marked.use(
+	{
+		extensions: [
+			{
+				// support mermaid diagrams in marked via tokenizer bfore rendering
+				name: 'mermaid',
+				level: 'block',
+				start(src: string) {
+					return src.match(/^```mermaid/)?.index;
+				},
+				tokenizer(src: string) {
+					const match = /^```mermaid\n([\s\S]+?)```/.exec(src);
+					if (match) {
+						return {
+							type: 'html',
+							raw: match[0],
+							text: `<pre class="mermaid">${match[1]}</pre>`
+						};
+					}
+				}
+			}
+		]
+	},
+	//syntvax highlighting
 	markedHighlight({
 		langPrefix: 'hljs language-',
-		highlight(code, lang) {
+		highlight(code: string, lang: string) {
 			const language = hljs.getLanguage(lang || '') ? lang : 'plaintext';
 			return hljs.highlight(code, { language }).value;
 		}

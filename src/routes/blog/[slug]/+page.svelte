@@ -1,5 +1,4 @@
 <script lang="ts">
-	/* eslint-disable svelte/no-navigation-without-resolve */
 	import { onMount } from 'svelte';
 	import 'highlight.js/styles/github-dark.css';
 	import { goto } from '$app/navigation';

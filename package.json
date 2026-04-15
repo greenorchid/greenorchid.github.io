@@ -55,7 +55,7 @@
 		"@bluesky-social/oauth-client-browser": "^0.3.33",
 		"highlight.js": "^11.11.1",
 		"marked": "^17.0.5",
-		"marked-highlight": "^2.2.3",
+		"marked-highlight": "^2.2.4",
 		"mermaid": "^11.14.0",
 		"tippy.js": "^6.3.7"
 	}

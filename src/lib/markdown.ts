@@ -15,10 +15,11 @@ marked.use(
 				tokenizer(src: string) {
 					const match = /^```mermaid\n([\s\S]+?)```/.exec(src);
 					if (match) {
+						const escapedContent = match[1].replace(/"/g, '&quot;');
 						return {
 							type: 'html',
 							raw: match[0],
-							text: `<pre class="mermaid">${match[1]}</pre>`
+							text: `<pre class="mermaid" data-mermaid-src="${escapedContent}">${match[1]}</pre>`
 						};
 					}
 				}

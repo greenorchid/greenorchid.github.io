@@ -17,13 +17,36 @@
 	let { data } = $props();
 	const post = $derived(data.post);
 
-	onMount(async () => {
-		initializeAgent();
+	async function renderDiagrams() {
+		if (typeof document === 'undefined') return;
+
+		const diagrams = document.querySelectorAll('.mermaid');
+		if (diagrams.length === 0) return;
+
+		diagrams.forEach((el) => {
+			const source = el.getAttribute('data-mermaid-src');
+			if (source) {
+				el.innerHTML = source;
+				el.removeAttribute('data-processed');
+			}
+		});
+
 		mermaid.initialize({
 			startOnLoad: false,
 			theme: theme.mode === 'light' ? 'neutral' : theme.mode
 		});
 		await mermaid.run();
+	}
+
+	onMount(async () => {
+		initializeAgent();
+	});
+
+	$effect(() => {
+		// Watch theme.mode to re-render diagrams
+		if (theme.mode) {
+			renderDiagrams();
+		}
 	});
 
 	function getAiBadgeBorder(level: string) {

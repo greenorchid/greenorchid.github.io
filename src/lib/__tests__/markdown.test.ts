@@ -91,6 +91,14 @@ describe('markdown utility', () => {
 			const html = renderMarkdown(content);
 			expect(html).toContain('hljs language-typescript');
 		});
+
+		it('should tokenize mermaid diagrams with original source in data-mermaid-src', () => {
+			const content = '```mermaid\ngraph TD;\n  A-->B;\n```';
+			const html = renderMarkdown(content);
+			expect(html).toContain('class="mermaid"');
+			expect(html).toContain('data-mermaid-src="graph TD;\n  A-->B;\n"');
+			expect(html).toContain('graph TD;\n  A-->B;');
+		});
 	});
 
 	describe('parseMarkdown', () => {

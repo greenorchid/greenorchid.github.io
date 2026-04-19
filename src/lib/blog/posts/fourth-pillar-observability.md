@@ -4,6 +4,7 @@ date: '2026-04-19'
 excerpt: 'Continuous profiling is having a moment, but is it really the fourth pillar of observability, or just something we are finally using properly?'
 tags: ['observability', 'continuous-profiling', 'distributed-systems']
 aiContributions: 'none'
+blueskyUri: 'at://did:plc:oo4sqwem2prw2yebqexllrx3/app.bsky.feed.post/3mjupqtofle25'
 ---
 
 # The “Fourth Pillar” of Observability (That Wasn’t Really Missing)

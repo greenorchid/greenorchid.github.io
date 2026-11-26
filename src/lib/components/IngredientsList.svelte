@@ -98,12 +98,13 @@
 								class="ml-5 flex items-start justify-between border-b border-gray-100 py-3 last:border-0 dark:border-gray-700"
 							>
 								<div class="flex-1">
-									<span class="font-medium text-gray-900 dark:text-gray-100">{ingredient.name}</span
-									>
+									<span class="font-medium text-gray-900 dark:text-gray-100">
+										{ingredient.name}
+									</span>
 									{#if ingredient.notes}
-										<span class="text-s ml-2 text-gray-500 italic dark:text-gray-400"
-											>({ingredient.notes})</span
-										>
+										<span class="text-s ml-2 text-gray-500 italic dark:text-gray-400">
+											({ingredient.notes})
+										</span>
 									{/if}
 								</div>
 								<span class="ml-4 font-medium text-gray-900 dark:text-gray-100">
@@ -113,9 +114,9 @@
 										{ingredient.amount.toFixed(2).replace(/\.?0+$/, '')}
 									{/if}
 									{#if ingredient.unit}
-										<span class="font-normal text-gray-600 dark:text-gray-400"
-											>{ingredient.unit}</span
-										>
+										<span class="font-normal text-gray-600 dark:text-gray-400">
+											{ingredient.unit}
+										</span>
 									{/if}
 								</span>
 							</li>
@@ -133,9 +134,9 @@
 					<div class="flex-1">
 						<span class="font-medium text-gray-900 dark:text-gray-100">{ingredient.name}</span>
 						{#if ingredient.notes}
-							<span class="text-s ml-2 text-gray-500 italic dark:text-gray-400"
-								>({ingredient.notes})</span
-							>
+							<span class="text-s ml-2 text-gray-500 italic dark:text-gray-400">
+								({ingredient.notes})
+							</span>
 						{/if}
 					</div>
 					<span class="ml-4 font-medium text-gray-900 dark:text-gray-100">

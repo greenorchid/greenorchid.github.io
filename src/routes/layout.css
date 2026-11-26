@@ -147,6 +147,23 @@
 	--card-bg: #0f172a;
 }
 
+[data-theme='thanksgiving'] {
+	--bg-primary: #fefce8;
+	--text-primary: #713f12;
+	--accent-color: 180, 83, 9;
+	--particle-color: 217, 119, 6;
+	--card-bg: #fef3c7;
+	--card-border: #fde68a;
+}
+[data-theme='thanksgiving'][data-mode='dark'] {
+	--bg-primary: #29170a;
+	--text-primary: #fef3c7;
+	--accent-color: 245, 158, 11;
+	--particle-color: 245, 158, 11;
+	--card-bg: #451a03;
+	--card-border: #78350f;
+}
+
 [data-theme='new-year'] {
 	--bg-primary: #e5e7eb;
 	--text-primary: #0f172a;

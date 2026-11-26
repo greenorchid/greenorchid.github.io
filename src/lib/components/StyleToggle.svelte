@@ -13,6 +13,7 @@
 		summer: 'Summer Style',
 		autumn: 'Autumn Style',
 		halloween: 'Halloween Style',
+		thanksgiving: 'Thanksgiving Style',
 		christmas: 'Christmas Style',
 		'new-year': 'New Year Style'
 	};
@@ -145,6 +146,22 @@
 							stroke-linejoin="round"
 							stroke-width="2"
 							d="M12 2C9.5 2 7.5 4 7.5 6.5C7.5 7.5 7.8 8.4 8.3 9.1C7.2 9.8 6.5 11.1 6.5 12.5C6.5 15 8.5 17 11 17H13C15.5 17 17.5 15 17.5 12.5C17.5 11.1 16.8 9.8 15.7 9.1C16.2 8.4 16.5 7.5 16.5 6.5C16.5 4 14.5 2 12 2ZM11 19V22M13 19V22M10 21H14"
+						/>
+					</svg>
+				{:else if theme.style === 'thanksgiving'}
+					<!-- Harvest Wheat / Acorn icon -->
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-5 w-5"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M12 3v3m-6 5c0-2.5 2.7-4.5 6-4.5s6 2 6 4.5H6zm1 0v2.5a5 5 0 0010 0V11"
 						/>
 					</svg>
 				{:else if theme.style === 'new-year'}

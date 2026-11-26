@@ -12,6 +12,7 @@
 	import { SummerPainter } from './background/SummerPainter';
 	import { AutumnPainter } from './background/AutumnPainter';
 	import { HalloweenPainter } from './background/HalloweenPainter';
+	import { ThanksgivingPainter } from './background/ThanksgivingPainter';
 	import { NewYearPainter } from './background/NewYearPainter';
 
 	let canvas: HTMLCanvasElement | undefined = $state();
@@ -65,6 +66,9 @@
 				break;
 			case 'halloween':
 				currentPainter = new HalloweenPainter();
+				break;
+			case 'thanksgiving':
+				currentPainter = new ThanksgivingPainter();
 				break;
 			case 'new-year':
 				currentPainter = new NewYearPainter();

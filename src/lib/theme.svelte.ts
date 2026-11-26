@@ -1,4 +1,4 @@
-import { browser } from '$app/environment';
+import { browser } from '$app/env';
 import { getAvailableStyles } from './themeConfig';
 
 export type Mode = 'light' | 'dark';
@@ -12,6 +12,7 @@ export type Style =
 	| 'summer'
 	| 'autumn'
 	| 'halloween'
+	| 'thanksgiving'
 	| 'new-year';
 
 class ThemeStore {
@@ -92,6 +93,7 @@ class ThemeStore {
 			'summer',
 			'autumn',
 			'halloween',
+			'thanksgiving',
 			'new-year'
 		].includes(style || '');
 	}

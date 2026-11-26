@@ -27,14 +27,22 @@ export const SEASONAL_STYLES: SeasonalStyle[] = [
 	{ id: 'easter', label: 'Easter Style', startMonth: 2, startDay: 21, endMonth: 3, endDay: 30 }, // Roughly March/April
 	{ id: 'spring', label: 'Spring Style', startMonth: 4, startDay: 1, endMonth: 4, endDay: 31 },
 	{ id: 'summer', label: 'Summer Style', startMonth: 5, startDay: 1, endMonth: 7, endDay: 31 },
-	{ id: 'autumn', label: 'Autumn Style', startMonth: 8, startDay: 1, endMonth: 9, endDay: 30 },
+	{ id: 'autumn', label: 'Autumn Style', startMonth: 8, startDay: 1, endMonth: 9, endDay: 14 },
 	{
 		id: 'halloween',
 		label: 'Halloween Style',
+		startMonth: 9,
+		startDay: 15,
+		endMonth: 9,
+		endDay: 31
+	},
+	{
+		id: 'thanksgiving',
+		label: 'Thanksgiving Style',
 		startMonth: 10,
 		startDay: 1,
 		endMonth: 10,
-		endDay: 31
+		endDay: 30
 	},
 	{
 		id: 'christmas',

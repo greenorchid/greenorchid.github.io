@@ -109,36 +109,44 @@
 			<div class="flex flex-wrap gap-2">
 				<span
 					class="rounded-full border border-green-200 bg-green-100 px-3 py-1 text-sm text-green-700 dark:border-green-800 dark:bg-green-900/30 dark:text-green-400"
-					>Go</span
 				>
+					Go
+				</span>
 				<span
 					class="rounded-full border border-green-200 bg-green-100 px-3 py-1 text-sm text-green-700 dark:border-green-800 dark:bg-green-900/30 dark:text-green-400"
-					>Python</span
 				>
+					Python
+				</span>
 				<span
 					class="rounded-full border border-green-200 bg-green-100 px-3 py-1 text-sm text-green-700 dark:border-green-800 dark:bg-green-900/30 dark:text-green-400"
-					>JavaScript/TypeScript</span
 				>
+					JavaScript/TypeScript
+				</span>
 				<span
 					class="rounded-full border border-green-200 bg-green-100 px-3 py-1 text-sm text-green-700 dark:border-green-800 dark:bg-green-900/30 dark:text-green-400"
-					>Kubernetes</span
 				>
+					Kubernetes
+				</span>
 				<span
 					class="rounded-full border border-green-200 bg-green-100 px-3 py-1 text-sm text-green-700 dark:border-green-800 dark:bg-green-900/30 dark:text-green-400"
-					>AWS</span
 				>
+					AWS
+				</span>
 				<span
 					class="rounded-full border border-green-200 bg-green-100 px-3 py-1 text-sm text-green-700 dark:border-green-800 dark:bg-green-900/30 dark:text-green-400"
-					>Multi-Cloud</span
 				>
+					Multi-Cloud
+				</span>
 				<span
 					class="rounded-full border border-green-200 bg-green-100 px-3 py-1 text-sm text-green-700 dark:border-green-800 dark:bg-green-900/30 dark:text-green-400"
-					>Observability</span
 				>
+					Observability
+				</span>
 				<span
 					class="rounded-full border border-green-200 bg-green-100 px-3 py-1 text-sm text-green-700 dark:border-green-800 dark:bg-green-900/30 dark:text-green-400"
-					>GitOps</span
 				>
+					GitOps
+				</span>
 			</div>
 		</div>
 
@@ -159,8 +167,10 @@
 						href="https://www.youtube.com/@IrishChristmasEngineer"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="text-green-600 hover:underline dark:text-green-400">IrishChristmasEngineer</a
+						class="text-green-600 hover:underline dark:text-green-400"
 					>
+						IrishChristmasEngineer
+					</a>
 				</li>
 			</ul>
 		</div>
@@ -178,16 +188,20 @@
 							href="https://github.com/greenorchid"
 							target="_blank"
 							rel="noopener noreferrer"
-							class="text-green-600 hover:underline dark:text-green-400">GitHub</a
+							class="text-green-600 hover:underline dark:text-green-400"
 						>
+							GitHub
+						</a>
 					</li>
 					<li>
 						<a
 							href="https://ie.linkedin.com/in/mpbehan"
 							target="_blank"
 							rel="noopener noreferrer"
-							class="text-green-600 hover:underline dark:text-green-400">LinkedIn</a
+							class="text-green-600 hover:underline dark:text-green-400"
 						>
+							LinkedIn
+						</a>
 					</li>
 					<li>Email: marc [at] behan [dot] dev</li>
 				</ul>

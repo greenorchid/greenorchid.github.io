@@ -1,19 +1,13 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-
-// Create a mock for $env/dynamic/public
-vi.mock('$env/dynamic/public', () => ({
-	env: {
-		PUBLIC_DOMAIN: undefined as string | undefined
-	}
-}));
-
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { CONFIG, getDomain } from '../config';
-import { env } from '$env/dynamic/public';
 
 describe('config utility', () => {
 	beforeEach(() => {
-		vi.resetModules();
-		(env as Record<string, string | undefined>).PUBLIC_DOMAIN = undefined;
+		vi.unstubAllEnvs();
+	});
+
+	afterEach(() => {
+		vi.unstubAllEnvs();
 	});
 
 	it('should return default domain when PUBLIC_DOMAIN is not set', () => {
@@ -21,17 +15,17 @@ describe('config utility', () => {
 	});
 
 	it('should return PUBLIC_DOMAIN when set', () => {
-		(env as Record<string, string | undefined>).PUBLIC_DOMAIN = 'https://custom.domain';
+		vi.stubEnv('PUBLIC_DOMAIN', 'https://custom.domain');
 		expect(CONFIG.domain).toBe('https://custom.domain');
 	});
 
 	it('should remove trailing slash from domain', () => {
-		(env as Record<string, string | undefined>).PUBLIC_DOMAIN = 'https://custom.domain/';
+		vi.stubEnv('PUBLIC_DOMAIN', 'https://custom.domain/');
 		expect(CONFIG.domain).toBe('https://custom.domain');
 	});
 
 	it('should provide a deprecated getDomain function', () => {
-		(env as Record<string, string | undefined>).PUBLIC_DOMAIN = 'https://test.dev';
+		vi.stubEnv('PUBLIC_DOMAIN', 'https://test.dev');
 		expect(getDomain()).toBe('https://test.dev');
 	});
 

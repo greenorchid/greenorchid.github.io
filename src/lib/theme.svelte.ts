@@ -12,6 +12,7 @@ export type Style =
 	| 'summer'
 	| 'autumn'
 	| 'halloween'
+	| 'thanksgiving'
 	| 'new-year';
 
 class ThemeStore {
@@ -92,6 +93,7 @@ class ThemeStore {
 			'summer',
 			'autumn',
 			'halloween',
+			'thanksgiving',
 			'new-year'
 		].includes(style || '');
 	}

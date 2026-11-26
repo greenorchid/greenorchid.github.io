@@ -40,3 +40,10 @@ updates:
         update-types:
           - 'minor'
           - 'patch'
+
+    # remove once typescript >6.0.3 is compatible with SvelteKit 3, svelte-check, and
+    # typescript-eslint which require the JS compiler API that TypeScript 7 does not provide.
+    ignore:
+      - dependency-name: 'typescript'
+        versions:
+          - '>=6.0.3'

@@ -1,5 +1,4 @@
 <script lang="ts">
-	/* eslint-disable svelte/no-navigation-without-resolve */
 	import { onMount } from 'svelte';
 	import LogoAnimated from '$lib/components/LogoAnimated.svelte';
 	import FontSizePopover from '$lib/components/FontSizePopover.svelte';

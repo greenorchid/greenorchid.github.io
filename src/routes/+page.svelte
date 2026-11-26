@@ -1,5 +1,4 @@
 <script>
-	/* eslint-disable svelte/no-navigation-without-resolve */
 	import LogoAnimated from '$lib/components/LogoAnimated.svelte';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';

@@ -4,6 +4,7 @@ date: '2026-11-26'
 excerpt: 'Some thoughts from ongoing engineering-platform work on secure agent execution, the SDLC bottlenecks nobody wants to inherit, and why governance is easier to build in than bolt on.'
 tags: ['AI', 'FinOS', 'SDLC', 'Governance', 'Agentic AI', 'Platform Engineering']
 aiContributions: 'partial'
+blueskyUri: 'at://did:plc:oo4sqwem2prw2yebqexllrx3/app.bsky.feed.post/3n3atbpdlua27'
 ---
 
 # Giving AI Agents the Keys? Not Just Yet.

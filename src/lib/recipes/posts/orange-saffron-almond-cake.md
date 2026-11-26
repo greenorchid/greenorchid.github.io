@@ -1,6 +1,6 @@
 ---
 title: 'Saffron & Clementine Almond Cake'
-date: '2026-11-26'
+date: '2026-12-01'
 excerpt: 'A beautifully moist, naturally gluten-free almond cake infused with whole clementines and fragrant saffron, finished with a sweet citrus drizzle. Rich, aromatic and delicious served with a flavoured mascarpone cream or just plain crème fraîche.'
 tags: ['recipe', 'gluten-free', 'dessert', 'cake', 'baking']
 servings: 8

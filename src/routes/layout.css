@@ -196,3 +196,7 @@ body {
 	background-color: var(--bg-primary);
 	transition: background-color 0.3s ease;
 }
+
+[data-mode='dark'] .prose img {
+	filter: invert(0.92) hue-rotate(180deg);
+}

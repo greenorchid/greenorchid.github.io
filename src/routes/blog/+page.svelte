@@ -2,7 +2,7 @@
 	/* eslint-disable svelte/no-navigation-without-resolve */
 	import { getAllPosts, getAllTags } from '$lib/blog/utils';
 	import { goto } from '$app/navigation';
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 
 	const posts = getAllPosts();
 	const allTags = getAllTags();
@@ -46,8 +46,10 @@
 									<button
 										class="ml-1 hover:text-green-900 dark:hover:text-green-200"
 										onclick={() => toggleTag(st)}
-										aria-label="Remove {st} filter">&times;</button
+										aria-label="Remove {st} filter"
 									>
+										&times;
+									</button>
 								</span>
 							{/each}
 						</div>
@@ -105,7 +107,7 @@
 				<div
 					role="button"
 					tabindex="0"
-					onclick={() => goto(`${base}/blog/${post.slug}`)}
+					onclick={() => goto(resolve('/blog/[slug]', { slug: post.slug }))}
 					onkeydown={(e) => {
 						if (e.key === 'Enter' || e.key === ' ') {
 							e.preventDefault();

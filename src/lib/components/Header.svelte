@@ -8,13 +8,13 @@
 	import StyleToggle from '$lib/components/StyleToggle.svelte';
 	import HamburgerMenu from '$lib/components/HamburgerMenu.svelte';
 
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { isActive } from '$lib/utils';
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { CONFIG } from '$lib/config';
 
-	let currentPage = $derived($page.url.pathname);
+	let currentPage = $derived(page.url.pathname);
 
 	let showNavDropdown = $state(false);
 	let showAccessibilityDropdown = $state(false);
@@ -80,7 +80,7 @@
 >
 	<!-- Logo and brand on left -->
 	<div class="flex flex-shrink-0 items-center gap-3">
-		<a href="{base}/" class="flex items-center gap-3">
+		<a href={resolve('/')} class="flex items-center gap-3">
 			<LogoAnimated size={40} />
 			<span class="text-lg font-semibold text-gray-900 dark:text-gray-100">{CONFIG.siteName}</span>
 		</a>
@@ -92,7 +92,7 @@
 			{#each navLinks as link (link.href)}
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
 				<button
-					onclick={() => goto(`${base}${link.href}`)}
+					onclick={() => goto(resolve(link.href as '/'))}
 					class={getLinkClass(link.href)}
 					aria-current={isActive(link.href, currentPage) ? 'page' : undefined}
 				>
@@ -151,7 +151,7 @@
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
 				<button
 					onclick={() => {
-						goto(`${base}${link.href}`);
+						goto(resolve(link.href as '/'));
 						closeDropdowns();
 					}}
 					class="text-gray-900 hover:text-green-600 dark:text-gray-100 dark:hover:text-green-400 {getLinkClass(

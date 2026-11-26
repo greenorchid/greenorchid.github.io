@@ -1,5 +1,3 @@
-import { env } from '$env/dynamic/public';
-
 const DEFAULT_DOMAIN = 'https://behan.dev';
 
 export const CONFIG = {
@@ -8,7 +6,7 @@ export const CONFIG = {
 	blueskyHandle: 'behan.dev',
 	buildId: 'v-' + new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-'),
 	get domain(): string {
-		const rawDomain = env.PUBLIC_DOMAIN || DEFAULT_DOMAIN;
+		const rawDomain = (import.meta.env.PUBLIC_DOMAIN as string | undefined) || DEFAULT_DOMAIN;
 		return rawDomain.endsWith('/') ? rawDomain.slice(0, -1) : rawDomain;
 	}
 };

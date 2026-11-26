@@ -29,7 +29,7 @@
 		"@tailwindcss/vite": "^4.2.4",
 		"@testing-library/jest-dom": "^6.9.1",
 		"@testing-library/svelte": "^5.3.1",
-		"@types/node": "^25",
+		"@types/node": "^26",
 		"ajv": "^8.18.0",
 		"ajv-formats": "^3.0.1",
 		"eslint": "^10.2.1",

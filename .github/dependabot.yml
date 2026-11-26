@@ -1,13 +1,42 @@
 version: 2
+
 updates:
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
       interval: 'weekly'
+
     open-pull-requests-limit: 10
+
     reviewers:
       - 'greenorchid'
+
     commit-message:
       prefix: 'chore'
       prefix-development: 'chore'
       include: 'scope'
+
+    groups:
+      typescript-toolchain:
+        patterns:
+          - 'typescript'
+          - 'typescript-eslint'
+          - '@typescript-eslint/*'
+          - 'eslint'
+          - '@eslint/*'
+          - 'eslint-*'
+          - 'svelte-check'
+
+      svelte-toolchain:
+        patterns:
+          - 'svelte'
+          - '@sveltejs/*'
+          - 'vite'
+          - 'vitest'
+
+      routine-updates:
+        patterns:
+          - '*'
+        update-types:
+          - 'minor'
+          - 'patch'

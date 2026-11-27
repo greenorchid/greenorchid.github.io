@@ -1,5 +1,10 @@
 # behan.dev
 
+[![CI](https://github.com/greenorchid/greenorchid.github.io/actions/workflows/ci.yml/badge.svg)](https://github.com/greenorchid/greenorchid.github.io/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/greenorchid/greenorchid.github.io/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/greenorchid/greenorchid.github.io/actions/workflows/github-code-scanning/codeql)
+[![Bluesky Auto-Post](https://github.com/greenorchid/greenorchid.github.io/actions/workflows/bluesky-auto-post.yml/badge.svg)](https://github.com/greenorchid/greenorchid.github.io/actions/workflows/bluesky-auto-post.yml)
+[![Deploy to GitHub Pages](https://github.com/greenorchid/greenorchid.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/greenorchid/greenorchid.github.io/actions/workflows/deploy.yml)
+
 A personal website and blog built with [SvelteKit](https://svelte.dev/docs/kit) and [Tailwind CSS](https://tailwindcss.com). Features include a responsive design, animated logo, blog posts, recipes, links, about pages, and accessibility options.
 
 ## Live Site
